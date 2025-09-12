@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
@@ -25,8 +24,8 @@ function App() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/order" element={<Order />} />
         <Route path="/safety" element={<div className='p-8'><h1 className='text-2xl font-bold text-red-700 mb-4'>Safety Tips</h1><ul className='list-disc pl-6'><li>Read instructions before use</li><li>Keep crackers away from children</li><li>Use outdoors only</li><li>Keep water nearby</li><li>Dispose safely</li></ul></div>} />
-    <Route path="/admin" element={<AdminLogin />} />
-    <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard/*" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
