@@ -1,12 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
+import CheckoutDrawer from '../components/CheckoutDrawer';
 import OrderProductTable from '../components/OrderProductTable';
 
 const Order = () => {
+  // Example cart state (replace with your actual cart logic)
+  const [cartItems, setCartItems] = useState([
+    { id: 'p1', name: 'Sparklers', qty: 2, price: 200 },
+    { id: 'p2', name: 'Flower Pots', qty: 1, price: 150 }
+  ]);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow mt-8">
       <h1 className="text-2xl font-bold text-red-700 mb-4">Estimate / Order</h1>
       <OrderProductTable />
-      <button className="bg-red-700 text-white px-6 py-2 rounded hover:bg-red-800">Enquire / Submit</button>
+      <button
+        className="bg-red-700 text-white px-6 py-2 rounded hover:bg-red-800"
+        onClick={() => setDrawerOpen(true)}
+      >
+        Place Order
+      </button>
+      <CheckoutDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        cartItems={cartItems}
+      />
       <p className="mt-6 text-gray-700">For bulk orders and special requests, please contact us directly.</p>
       <footer className="bg-gray-900 text-gray-100 w-full py-6 mt-8 rounded-lg">
         <div className="max-w-3xl mx-auto px-4">
