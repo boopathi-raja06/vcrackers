@@ -30,7 +30,7 @@ const Contact = () => {
         <button type="submit" className="bg-red-700 text-white px-6 py-2 rounded hover:bg-red-800">Send</button>
       </form>
       <footer className="bg-gray-900 text-gray-100 w-full py-6 mt-8 rounded-lg">
-        <div className="mx-auto px-4">
+        <div className="mx-auto px-4 text-center">
           <h3 className="font-bold text-lg mb-2">Veena Crackers</h3>
           <p className="mb-2">123 Main Street, Sivakasi | Phone: +91-9876543210 | Email: info@veenacrackers.in</p>
           <p className="text-xs">Disclaimer: As per Supreme Court order, online sale of crackers is prohibited. This site is for information only.</p>
