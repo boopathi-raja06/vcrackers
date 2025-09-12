@@ -1,5 +1,5 @@
 import React from 'react';
-import { SlideInTop, SlideInLeft, SlideInBottom, StaggeredSlideInBottom } from '../components/MotionWrappers';
+import { SlideInTop, SlideInLeft, SlideInRight, SlideInBottom, StaggeredSlideInBottom } from '../components/MotionWrappers';
 import ProductList from '../components/ProductList';
 
 import diwaliBanner from '../assets/banner2.jpg';
