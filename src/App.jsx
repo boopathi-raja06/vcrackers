@@ -14,8 +14,20 @@ import Navbar from './components/Navbar';
 import FloatingIcons from './components/FloatingIcons';
 
 function App() {
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1200); // Simulate loading
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Router>
+      {loading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-80">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-700"></div>
+        </div>
+      )}
       <Navbar />
       <FloatingIcons />
       <Routes>
@@ -24,12 +36,12 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/order" element={<Order />} />
-  <Route path="/safety" element={<Safety />} />
+        <Route path="/safety" element={<Safety />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard/*" element={<AdminDashboard />} />
-    {/* Redirect old admin routes to dashboard */}
-    <Route path="/admin/products" element={<Navigate to="/admin/dashboard/products" replace />} />
-    <Route path="/admin/orders" element={<Navigate to="/admin/dashboard/orders" replace />} />
+        {/* Redirect old admin routes to dashboard */}
+        <Route path="/admin/products" element={<Navigate to="/admin/dashboard/products" replace />} />
+        <Route path="/admin/orders" element={<Navigate to="/admin/dashboard/orders" replace />} />
       </Routes>
     </Router>
   );
