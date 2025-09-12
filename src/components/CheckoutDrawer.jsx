@@ -3,7 +3,7 @@ import { addOrder } from "../firebase/firestoreService";
 import { serverTimestamp } from "firebase/firestore";
 
 export default function CheckoutDrawer({ open, onClose, cartItems }) {
-  const [form, setForm] = useState({ name: "", phone: "", address: "" });
+  const [form, setForm] = useState({ name: "", phone: "", address: "", email: "" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -13,12 +13,13 @@ export default function CheckoutDrawer({ open, onClose, cartItems }) {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (!form.name || !form.phone.match(/^[0-9]{10}$/)) return;
+  if (!form.name || !form.phone.match(/^[0-9]{10}$/) || !form.email) return;
     setLoading(true);
     await addOrder({
       customerName: form.name,
       phone: form.phone,
       address: form.address,
+      email: form.email,
       items: cartItems.map(item => ({
         productId: item.id,
         name: item.name,
@@ -44,6 +45,7 @@ export default function CheckoutDrawer({ open, onClose, cartItems }) {
           <h2 className="text-xl font-bold mb-2">Checkout</h2>
           <input name="name" value={form.name} onChange={handleChange} required placeholder="Name" className="border p-2 rounded" />
           <input name="phone" value={form.phone} onChange={handleChange} required placeholder="Phone (10 digits)" className="border p-2 rounded" maxLength={10} pattern="[0-9]{10}" />
+          <input name="email" value={form.email} onChange={handleChange} required placeholder="Email" className="border p-2 rounded" type="email" />
           <input name="address" value={form.address} onChange={handleChange} placeholder="Address (optional)" className="border p-2 rounded" />
           <div>
             <h3 className="font-semibold mb-1">Items</h3>

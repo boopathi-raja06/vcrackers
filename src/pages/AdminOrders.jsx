@@ -34,7 +34,7 @@ const AdminOrders = () => {
                 <td className="border p-2">{order.address || '-'}</td>
                 <td className="border p-2">{order.email}</td>
                 <td className="border p-2">₹{order.total}</td>
-                <td className="border p-2">{order.createdAt ? new Date(order.createdAt).toLocaleString() : "-"}</td>
+                <td className="border p-2">{order.createdAt && order.createdAt.toDate ? order.createdAt.toDate().toLocaleString() : (order.createdAt ? new Date(order.createdAt).toLocaleString() : "-")}</td>
                 <td className="border p-2">
                   <button className="text-blue-600" onClick={() => setExpanded(expanded === order.id ? null : order.id)}>
                     {expanded === order.id ? "Hide" : "View"}
