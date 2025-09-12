@@ -17,7 +17,7 @@ const specialties = [
 const Home = () => {
   return (
     <div className="flex flex-col items-center px-4 py-8">
-      <img src={diwaliBanner} alt="Diwali Banner" className="w-1/2 max-w-2xl rounded-lg shadow mb-6" />
+  <img src={diwaliBanner} alt="Diwali Banner" className="w-full rounded-lg shadow mb-6" />
       <h1 className="text-4xl font-bold text-red-700 mb-2">Welcome to Veena Crackers</h1>
       <p className="text-lg mb-4 text-gray-700">Your one-stop shop for all types of crackers. Quality, safety, and celebration guaranteed!</p>
       <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 w-full max-w-2xl text-center text-yellow-800 font-semibold">
@@ -57,7 +57,7 @@ const Home = () => {
           <span className="font-semibold">Satisfaction</span>
         </div>
       </div>
-      <footer className="bg-gray-900 text-gray-100 w-1/2 max-w-2xl py-6 mt-8 rounded-lg">
+  <footer className="bg-gray-900 text-gray-100 w-full py-6 mt-8 rounded-lg">
         <div className="mx-auto px-4">
           <h3 className="font-bold text-lg mb-2">Veena Crackers</h3>
           <p className="mb-2">123 Main Street, Sivakasi | Phone: +91-9876543210 | Email: info@veenacrackers.in</p>
