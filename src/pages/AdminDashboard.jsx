@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import ProductManager from '../components/ProductManager';
-import OrderManager from '../components/OrderManager';
-import AdminProductForm from '../components/AdminProductForm';
+import AdminSidebar from '../components/AdminSidebar';
+import { Routes, Route } from 'react-router-dom';
+import AdminProducts from './AdminProducts';
+import AdminOrders from './AdminOrders';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -14,14 +15,14 @@ const AdminDashboard = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <h1 className="text-3xl font-bold text-red-700 mb-6">Admin Dashboard</h1>
-      <AdminProductForm />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <ProductManager />
-        <OrderManager />
-      </div>
-  {/* Only use AdminProductForm for product creation */}
+    <div className="flex min-h-screen bg-gray-50">
+      <AdminSidebar />
+      <main className="flex-1">
+        <Routes>
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="orders" element={<AdminOrders />} />
+        </Routes>
+      </main>
     </div>
   );
 };
