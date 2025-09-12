@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
 import Contact from './pages/Contact';
 import Gallery from './pages/Gallery';
+import Safety from './pages/Safety';
 import Order from './pages/Order';
 
 import AdminLogin from './pages/AdminLogin';
@@ -23,7 +24,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/order" element={<Order />} />
-        <Route path="/safety" element={<div className='p-8'><h1 className='text-2xl font-bold text-red-700 mb-4'>Safety Tips</h1><ul className='list-disc pl-6'><li>Read instructions before use</li><li>Keep crackers away from children</li><li>Use outdoors only</li><li>Keep water nearby</li><li>Dispose safely</li></ul></div>} />
+  <Route path="/safety" element={<Safety />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard/*" element={<AdminDashboard />} />
     {/* Redirect old admin routes to dashboard */}
