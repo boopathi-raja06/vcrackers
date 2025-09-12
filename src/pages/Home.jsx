@@ -19,7 +19,9 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center px-4 py-8">
       <SlideInTop>
-        <img src={diwaliBanner} alt="Diwali Banner" className="w-full rounded-lg shadow mb-6" />
+  <div className="w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-lg shadow mb-6 overflow-hidden flex items-center justify-center">
+          <img src={diwaliBanner} alt="Diwali Banner" className="w-full h-full object-cover" />
+        </div>
       </SlideInTop>
       <SlideInLeft>
         <h1 className="text-4xl font-bold text-red-700 mb-2">Welcome to Veena Crackers</h1>
@@ -36,12 +38,14 @@ const Home = () => {
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Our Specialties</h2>
       </SlideInLeft>
       <StaggeredSlideInBottom>
-        {specialties.map((item) => (
-          <div key={item.name} className="flex flex-col items-center bg-white rounded-lg shadow p-4">
-            <span className="text-4xl mb-2">{item.icon}</span>
-            <span className="font-semibold text-gray-700">{item.name}</span>
-          </div>
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-4xl mx-auto mb-8">
+          {specialties.map((item) => (
+            <div key={item.name} className="flex flex-col items-center bg-white rounded-lg shadow p-4">
+              <span className="text-4xl mb-2">{item.icon}</span>
+              <span className="font-semibold text-gray-700">{item.name}</span>
+            </div>
+          ))}
+        </div>
       </StaggeredSlideInBottom>
       <SlideInLeft>
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Why Choose Us</h2>
