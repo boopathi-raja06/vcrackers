@@ -33,7 +33,8 @@ export default function CheckoutDrawer({ open, onClose, cartItems }) {
     setSuccess(true);
     setTimeout(() => {
       setSuccess(false);
-      onClose();
+      if (onOrderPlaced) onOrderPlaced();
+      else onClose();
     }, 1500);
   };
 

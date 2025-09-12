@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../firebase/firestoreService";
 
-const OrderProductTable = () => {
+const OrderProductTable = ({ cartItems, setCartItems }) => {
   const [products, setProducts] = useState([]);
   const [qty, setQty] = useState({});
 
@@ -29,13 +29,16 @@ const OrderProductTable = () => {
   }, {});
 
   const handleQtyChange = (id, value) => {
-    setQty(qty => ({ ...qty, [id]: Number(value) }));
+    const newQty = { ...qty, [id]: Number(value) };
+    setQty(newQty);
+    // Update cartItems based on qty
+    const updatedCart = products
+      .filter(p => newQty[p.id] > 0)
+      .map(p => ({ id: p.id, name: p.name, qty: newQty[p.id], price: p.price }));
+    setCartItems(updatedCart);
   };
 
-  const grandTotal = Object.entries(qty).reduce((sum, [id, q]) => {
-    const prod = products.find(p => p.id === id);
-    return sum + (prod ? prod.price * q : 0);
-  }, 0);
+  const grandTotal = cartItems.reduce((sum, item) => sum + item.qty * item.price, 0);
 
   return (
     <div>
