@@ -5,11 +5,7 @@ const Contact = () => {
   return (
     <div className="bg-white mt-8 flex flex-col items-center">
       {/* Banner - Full Width */}
-      <img 
-        src={banner} 
-        alt="Mega Sale Banner" 
-        className="w-full h-[300px] object-cover shadow mb-6" 
-      />
+      <img src={banner} alt="Happy Diwali Banner" className="w-full rounded-lg shadow mb-6" />
 
       {/* Contact Box */}
       <div className="max-w-2xl w-full mx-auto p-6 bg-white rounded-lg shadow flex flex-col items-center">
