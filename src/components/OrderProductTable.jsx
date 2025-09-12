@@ -45,7 +45,6 @@ const OrderProductTable = () => {
           <table className="w-full border mb-4">
             <thead>
               <tr className="bg-gray-100">
-                <th className="p-2 border">Image</th>
                 <th className="p-2 border">Product Name</th>
                 <th className="p-2 border">Price</th>
                 <th className="p-2 border">Qty</th>
@@ -55,7 +54,6 @@ const OrderProductTable = () => {
             <tbody>
               {prods.map(prod => (
                 <tr key={prod.id} className="text-center">
-                  <td className="border p-2">{prod.image ? <img src={prod.image} alt={prod.name} className="h-12 w-12 object-cover mx-auto" /> : "-"}</td>
                   <td className="border p-2">{prod.name}</td>
                   <td className="border p-2">₹{prod.price}</td>
                   <td className="border p-2">
