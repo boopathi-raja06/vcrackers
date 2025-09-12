@@ -1,6 +1,6 @@
 import React from 'react';
 
-import banner from '../assets/diwali.png';
+import banner from '../assets/banner2.jpg';
 
 const Contact = () => {
   return (
@@ -29,11 +29,11 @@ const Contact = () => {
         <textarea placeholder="Your Message" rows={4} className="p-2 border rounded" />
         <button type="submit" className="bg-red-700 text-white px-6 py-2 rounded hover:bg-red-800">Send</button>
       </form>
-      <footer className="bg-gray-900 text-gray-100 w-full py-6 mt-8 rounded-lg">
+      <footer className="bg-gray-900 text-gray-100 w-full h-[30vh] flex items-center justify-center mt-8 rounded-lg">
         <div className="mx-auto px-4 text-center">
-          <h3 className="font-bold text-lg mb-2">Veena Crackers</h3>
-          <p className="mb-2">123 Main Street, Sivakasi | Phone: +91-9876543210 | Email: info@veenacrackers.in</p>
-          <p className="text-xs">Disclaimer: As per Supreme Court order, online sale of crackers is prohibited. This site is for information only.</p>
+          <h3 className="font-bold text-2xl mb-4">Veena Crackers</h3>
+          <p className="mb-4 text-lg">123 Main Street, Sivakasi | Phone: +91-9876543210 | Email: info@veenacrackers.in</p>
+          <p className="text-base">Disclaimer: As per Supreme Court order, online sale of crackers is prohibited. This site is for information only.</p>
         </div>
       </footer>
     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductList from '../components/ProductList';
 
-import diwaliBanner from '../assets/diwali.png';
+import diwaliBanner from '../assets/banner2.jpg';
 
 const specialties = [
   { name: 'Chakkars', icon: '🌀' },
@@ -57,11 +57,11 @@ const Home = () => {
           <span className="font-semibold">Satisfaction</span>
         </div>
       </div>
-      <footer className="bg-gray-900 text-gray-100 w-full py-6 mt-8 rounded-lg">
+      <footer className="bg-gray-900 text-gray-100 w-full h-[30vh] flex items-center justify-center mt-8 rounded-lg">
         <div className="mx-auto px-4 text-center">
-          <h3 className="font-bold text-lg mb-2">Veena Crackers</h3>
-          <p className="mb-2">123 Main Street, Sivakasi | Phone: +91-9876543210 | Email: info@veenacrackers.in</p>
-          <p className="text-xs">Disclaimer: As per Supreme Court order, online sale of crackers is prohibited. This site is for information only.</p>
+          <h3 className="font-bold text-2xl mb-4">Veena Crackers</h3>
+          <p className="mb-4 text-lg">123 Main Street, Sivakasi | Phone: +91-9876543210 | Email: info@veenacrackers.in</p>
+          <p className="text-base">Disclaimer: As per Supreme Court order, online sale of crackers is prohibited. This site is for information only.</p>
         </div>
       </footer>
     </div>
