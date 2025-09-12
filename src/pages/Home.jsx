@@ -1,4 +1,5 @@
 import React from 'react';
+import ProductList from '../components/ProductList';
 
 import banner from '../assets/banner.png';
 
@@ -31,6 +32,8 @@ const Home = () => {
           </div>
         ))}
       </div>
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">Live Products</h2>
+      <ProductList />
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Why Choose Us?</h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-3xl mb-8">
         <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">
