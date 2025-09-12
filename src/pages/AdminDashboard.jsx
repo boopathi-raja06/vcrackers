@@ -21,13 +21,7 @@ const AdminDashboard = () => {
         <ProductManager />
         <OrderManager />
       </div>
-      <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-white rounded shadow">
-        <input name="name" value={form.name} onChange={handleChange} placeholder="Name" className="p-2 border rounded w-full" required />
-        <input name="category" value={form.category} onChange={handleChange} placeholder="Category" className="p-2 border rounded w-full" required />
-        <input name="price" value={form.price} onChange={handleChange} placeholder="Price" type="number" className="p-2 border rounded w-full" required />
-        <input name="image" value={form.image} onChange={handleChange} placeholder="Image URL" className="p-2 border rounded w-full" required />
-        <button type="submit" className="bg-red-700 text-white px-4 py-2 rounded w-full">Add Product</button>
-      </form>
+  {/* Only use AdminProductForm for product creation */}
     </div>
   );
 };
