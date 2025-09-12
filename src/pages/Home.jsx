@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductList from '../components/ProductList';
 
-import diwaliBanner from '../assets/diwali.eps';
+import diwaliBanner from '../assets/diwali.png';
 
 const specialties = [
   { name: 'Chakkars', icon: '🌀' },

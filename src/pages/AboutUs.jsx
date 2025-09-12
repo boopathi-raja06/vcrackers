@@ -1,6 +1,6 @@
 import React from 'react';
 
-import banner from '../assets/banner.png';
+import banner from '../assets/diwali.png';
 
 const brands = [
   { name: 'Vadivel', logo: '🟦' },
