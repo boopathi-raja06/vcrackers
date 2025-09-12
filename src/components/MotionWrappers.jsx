@@ -3,8 +3,9 @@ import { motion } from 'framer-motion';
 export const SlideInTop = ({ children, ...props }) => (
   <motion.div
     initial={{ y: -60, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
+    whileInView={{ y: 0, opacity: 1 }}
     transition={{ duration: 0.7, ease: 'easeOut' }}
+    viewport={{ once: true, amount: 0.3 }}
     {...props}
   >
     {children}
@@ -14,8 +15,9 @@ export const SlideInTop = ({ children, ...props }) => (
 export const SlideInLeft = ({ children, ...props }) => (
   <motion.div
     initial={{ x: -60, opacity: 0 }}
-    animate={{ x: 0, opacity: 1 }}
+    whileInView={{ x: 0, opacity: 1 }}
     transition={{ duration: 0.7, ease: 'easeOut' }}
+    viewport={{ once: true, amount: 0.3 }}
     {...props}
   >
     {children}
@@ -25,8 +27,9 @@ export const SlideInLeft = ({ children, ...props }) => (
 export const SlideInBottom = ({ children, ...props }) => (
   <motion.div
     initial={{ y: 60, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
+    whileInView={{ y: 0, opacity: 1 }}
     transition={{ duration: 0.7, ease: 'easeOut' }}
+    viewport={{ once: true, amount: 0.3 }}
     {...props}
   >
     {children}
@@ -36,7 +39,7 @@ export const SlideInBottom = ({ children, ...props }) => (
 export const StaggeredSlideInBottom = ({ children, stagger = 0.15, ...props }) => (
   <motion.div
     initial="hidden"
-    animate="visible"
+    whileInView="visible"
     variants={{
       visible: {
         transition: {
@@ -44,6 +47,7 @@ export const StaggeredSlideInBottom = ({ children, stagger = 0.15, ...props }) =
         },
       },
     }}
+    viewport={{ once: true, amount: 0.3 }}
     {...props}
   >
     {Array.isArray(children)
@@ -51,8 +55,9 @@ export const StaggeredSlideInBottom = ({ children, stagger = 0.15, ...props }) =
           <motion.div
             key={i}
             initial={{ y: 60, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
+            whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
+            viewport={{ once: true, amount: 0.3 }}
           >
             {child}
           </motion.div>
