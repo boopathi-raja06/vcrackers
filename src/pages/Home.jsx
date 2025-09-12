@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductList from '../components/ProductList';
 
-import banner from '../assets/banner.png';
+import diwaliBanner from '../assets/diwali.eps';
 
 const specialties = [
   { name: 'Chakkars', icon: '🌀' },
@@ -17,7 +17,7 @@ const specialties = [
 const Home = () => {
   return (
     <div className="flex flex-col items-center px-4 py-8">
-      <img src={banner} alt="Veena Crackers Banner" className="w-full max-w-3xl rounded-lg shadow mb-6" />
+  <img src={diwaliBanner} alt="Diwali Banner" className="w-full max-w-3xl rounded-lg shadow mb-6" />
       <h1 className="text-4xl font-bold text-red-700 mb-2">Welcome to Veena Crackers</h1>
       <p className="text-lg mb-4 text-gray-700">Your one-stop shop for all types of crackers. Quality, safety, and celebration guaranteed!</p>
       <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 w-full max-w-2xl text-center text-yellow-800 font-semibold">
