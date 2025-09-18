@@ -8,7 +8,10 @@ import Safety from './pages/Safety';
 import Order from './pages/Order';
 
 import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminLayout from './admin/AdminLayout';
+import DashboardStats from './admin/DashboardStats';
+import ProductManagement from './admin/ProductManagement';
+import ProductsPage from './admin/ProductsPage';
 
 import Navbar from './components/Navbar';
 import FloatingIcons from './components/FloatingIcons';
@@ -38,7 +41,11 @@ function App() {
         <Route path="/order" element={<Order />} />
         <Route path="/safety" element={<Safety />} />
         <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/dashboard/*" element={<AdminDashboard />} />
+        <Route path="/admin/dashboard/*" element={<AdminLayout />}>
+          <Route index element={<DashboardStats />} />
+          <Route path="products" element={<ProductManagement />} />
+          {/* Add more admin routes here: orders, etc. */}
+        </Route>
         {/* Redirect old admin routes to dashboard */}
         <Route path="/admin/products" element={<Navigate to="/admin/dashboard/products" replace />} />
         <Route path="/admin/orders" element={<Navigate to="/admin/dashboard/orders" replace />} />
