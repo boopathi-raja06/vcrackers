@@ -67,15 +67,11 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
                     <td className="border p-2">{idx + 1}</td>
                     <td className="border p-2">{prod.name}</td>
                     <td className="border p-2">
-                      {prod.image ? (
-                        <img src={prod.image} alt={prod.name} className="h-12 w-12 object-cover rounded mx-auto" />
-                      ) : (
-                        <svg className="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <rect x="3" y="7" width="18" height="14" rx="3" stroke="currentColor" strokeWidth="2" fill="#f3f4f6" />
-                          <rect x="8" y="3" width="8" height="4" rx="1" stroke="#9ca3af" strokeWidth="2" fill="#e5e7eb" />
-                          <circle cx="12" cy="14" r="3" stroke="#9ca3af" strokeWidth="2" fill="#e5e7eb" />
-                        </svg>
-                      )}
+                      <svg className="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <rect x="3" y="7" width="18" height="14" rx="3" stroke="currentColor" strokeWidth="2" fill="#f3f4f6" />
+                        <rect x="8" y="3" width="8" height="4" rx="1" stroke="#9ca3af" strokeWidth="2" fill="#e5e7eb" />
+                        <circle cx="12" cy="14" r="3" stroke="#9ca3af" strokeWidth="2" fill="#e5e7eb" />
+                      </svg>
                     </td>
                     <td className="border p-2">
                       <div className="flex flex-col items-center">
