@@ -77,7 +77,7 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
                     <td className="border p-2">
                       <input type="number" min="0" value={qty[prod.id] || 0} onChange={e => handleQtyChange(prod.id, e.target.value)} className="w-16 p-1 border rounded" />
                     </td>
-                    <td className="border p-2">₹{(qty[prod.id] || 0) * discountedPrice}</td>
+                    <td className="border p-2">₹{(qty[prod.id] || 0) * finalRate}</td>
                   </tr>
                 );
               })}
