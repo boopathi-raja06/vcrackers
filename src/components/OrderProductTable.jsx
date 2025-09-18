@@ -69,8 +69,8 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
                     <td className="border p-2">{prod.image ? <img src={prod.image} alt={prod.name} className="h-12 w-12 object-cover rounded mx-auto" /> : '-'}</td>
                     <td className="border p-2">
                       <div className="flex flex-col items-center">
-                        <span className="line-through text-gray-400 text-sm">₹{originalPrice}</span>
                         <span className="text-lg font-bold text-red-700">₹{discountAmount}</span>
+                        <span className="line-through text-gray-400 text-sm">₹{originalPrice}</span>
                       </div>
                     </td>
                     <td className="border p-2">₹{finalRate}</td>
