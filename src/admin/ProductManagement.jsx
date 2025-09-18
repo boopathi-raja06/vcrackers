@@ -83,6 +83,9 @@ export default function ProductManagement() {
     wsAmount = Math.max(wsAmount, 0);
     product.wsDiscountAmount = wsDiscountAmount;
     product.wsAmount = wsAmount;
+    // Map RS Price to Firestore 'price', Estimate Price to 'rsrate'
+    product.price = product.rsPrice;
+    product.rsrate = product.rsRate;
     if (editId) {
       await updateProduct(editId, product);
     } else {
@@ -91,7 +94,16 @@ export default function ProductManagement() {
     handleReset();
   };
 
-  const handleEdit = prod => { setEditId(prod.id); setForm(prod); };
+  const handleEdit = prod => {
+    setEditId(prod.id);
+    // Map Firestore fields to form fields
+    setForm({
+      ...initialForm,
+      ...prod,
+      rsPrice: prod.price || '',
+      rsRate: prod.rsrate || '',
+    });
+  };
   const handleDelete = async id => { if (window.confirm('Delete this product?')) await deleteProduct(id); };
 
   // Pagination & search
