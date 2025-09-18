@@ -45,7 +45,7 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
       {Object.entries(grouped).map(([category, prods]) => (
         <div key={category} className="mb-8">
           <h2 className="text-xl font-bold mb-4 text-red-700">{category}</h2>
-          <table className="w-full border mb-4">
+          <table className="w-full min-w-[900px] border mb-4">
             <thead>
               <tr className="bg-gray-100">
                 <th className="p-2 border">S.No</th>
