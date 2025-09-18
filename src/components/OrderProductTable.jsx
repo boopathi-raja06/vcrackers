@@ -45,7 +45,8 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
       {Object.entries(grouped).map(([category, prods]) => (
         <div key={category} className="mb-8">
           <h2 className="text-xl font-bold mb-4 text-red-700">{category}</h2>
-          <table className="w-full min-w-[900px] border mb-4">
+          <div className="flex justify-center">
+            <table className="w-3/4 min-w-[900px] border mb-4 mx-auto">
             <thead>
               <tr className="bg-gray-100">
                 <th className="p-2 border">S.No</th>
@@ -89,7 +90,7 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
               })}
             </tbody>
           </table>
-        </div>
+  </div>
       ))}
       <div className="text-right font-bold text-lg mb-4">Grand Total: ₹{grandTotal}</div>
     </div>
