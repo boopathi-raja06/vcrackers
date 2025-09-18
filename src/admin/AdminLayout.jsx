@@ -6,15 +6,15 @@ import AdminNavbar from './AdminNavbar';
 
 export default function AdminLayout() {
   const options = [
-    { name: 'Products', path: '/admin/products' },
-    { name: 'Orders', path: '/admin/orders' },
-    { name: 'Offers', path: '/admin/offers' },
-    { name: 'Payment', path: '/admin/payment' },
-    { name: 'Contact', path: '/admin/contact' },
-    { name: 'Banner', path: '/admin/banner' },
-    { name: 'General', path: '/admin/general' },
-    { name: 'Video', path: '/admin/video' },
-    { name: 'Pricelist', path: '/admin/pricelist' },
+    { name: 'Products', path: '/admin/dashboard/products' },
+    { name: 'Orders', path: '/admin/dashboard/orders' },
+    { name: 'Offers', path: '/admin/dashboard/offers' },
+    { name: 'Payment', path: '/admin/dashboard/payment' },
+    { name: 'Contact', path: '/admin/dashboard/contact' },
+    { name: 'Banner', path: '/admin/dashboard/banner' },
+    { name: 'General', path: '/admin/dashboard/general' },
+    { name: 'Video', path: '/admin/dashboard/video' },
+    { name: 'Pricelist', path: '/admin/dashboard/pricelist' },
   ];
   const navigate = useNavigate();
   return (
