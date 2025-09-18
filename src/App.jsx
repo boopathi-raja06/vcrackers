@@ -43,12 +43,10 @@ function App() {
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard/*" element={<AdminLayout />}>
           <Route index element={<DashboardStats />} />
-          <Route path="products" element={<ProductsPage />} />
           {/* Add more admin routes here: orders, etc. */}
         </Route>
-        {/* Redirect old admin routes to dashboard */}
-        <Route path="/admin/products" element={<Navigate to="/admin/dashboard/products" replace />} />
-        <Route path="/admin/orders" element={<Navigate to="/admin/dashboard/orders" replace />} />
+        <Route path="/admin/products" element={<ProductsPage />} />
+        {/* Add more standalone admin routes here if needed */}
       </Routes>
     </Router>
   );
