@@ -70,10 +70,10 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
                       {prod.image ? (
                         <img src={prod.image} alt={prod.name} className="h-12 w-12 object-cover rounded mx-auto" />
                       ) : (
-                        <svg className="h-12 w-12 mx-auto text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" strokeWidth="2" fill="#f3f4f6" />
-                          <path d="M8 15l4-4 4 4" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          <circle cx="9" cy="9" r="2" fill="#9ca3af" />
+                        <svg className="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <rect x="3" y="7" width="18" height="14" rx="3" stroke="currentColor" strokeWidth="2" fill="#f3f4f6" />
+                          <rect x="8" y="3" width="8" height="4" rx="1" stroke="#9ca3af" strokeWidth="2" fill="#e5e7eb" />
+                          <circle cx="12" cy="14" r="3" stroke="#9ca3af" strokeWidth="2" fill="#e5e7eb" />
                         </svg>
                       )}
                     </td>
