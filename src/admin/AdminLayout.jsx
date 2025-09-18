@@ -32,7 +32,9 @@ export default function AdminLayout() {
           </button>
         ))}
       </div>
-      {/* No Outlet here, grid only */}
+      <div className="w-full max-w-5xl mt-12">
+        <Outlet />
+      </div>
     </div>
   );
 }
