@@ -174,7 +174,7 @@ export default function ProductManagement() {
                 <td className="p-2">{prod.code}</td>
                 <td className="p-2">{prod.category}</td>
                 <td className="p-2">{prod.name}</td>
-                <td className="p-2">{prod.rsPrice}</td>
+                <td className="p-2">{prod.price}</td>
                 <td className="p-2">{prod.rsDiscountPercent}</td>
                 <td className="p-2">{prod.rsDiscountAmount}</td>
                 <td className="p-2">{prod.rsRate}</td>

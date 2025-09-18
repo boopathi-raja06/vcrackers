@@ -34,7 +34,7 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
     // Update cartItems based on qty
     const updatedCart = products
       .filter(p => newQty[p.id] > 0)
-      .map(p => ({ id: p.id, name: p.name, qty: newQty[p.id], price: p.price }));
+      .map(p => ({ id: p.id, name: p.name, qty: newQty[p.id], price: p.rsrate }));
     setCartItems(updatedCart);
   };
 
@@ -58,11 +58,11 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
               {prods.map(prod => (
                 <tr key={prod.id} className="text-center">
                   <td className="border p-2">{prod.name}</td>
-                  <td className="border p-2">₹{prod.price}</td>
+                  <td className="border p-2">₹{prod.rsrate}</td>
                   <td className="border p-2">
                     <input type="number" min="0" value={qty[prod.id] || 0} onChange={e => handleQtyChange(prod.id, e.target.value)} className="w-16 p-1 border rounded" />
                   </td>
-                  <td className="border p-2">₹{(qty[prod.id] || 0) * prod.price}</td>
+                  <td className="border p-2">₹{(qty[prod.id] || 0) * prod.rsrate}</td>
                 </tr>
               ))}
             </tbody>
