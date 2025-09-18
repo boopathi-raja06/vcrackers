@@ -60,7 +60,8 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
             <tbody>
               {prods.map((prod, idx) => {
                 const originalPrice = prod.price !== undefined ? prod.price : 0;
-                const discountedPrice = prod.rsRate !== undefined ? prod.rsRate : 0;
+                const discountAmount = prod.rsDiscountAmount !== undefined ? prod.rsDiscountAmount : 0;
+                const finalRate = prod.rsRate !== undefined ? prod.rsRate : 0;
                 return (
                   <tr key={prod.id} className="text-center">
                     <td className="border p-2">{idx + 1}</td>
@@ -69,10 +70,10 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
                     <td className="border p-2">
                       <div className="flex flex-col items-center">
                         <span className="line-through text-gray-400 text-sm">₹{originalPrice}</span>
-                        <span className="text-lg font-bold text-red-700">₹{discountedPrice}</span>
+                        <span className="text-lg font-bold text-red-700">₹{discountAmount}</span>
                       </div>
                     </td>
-                    <td className="border p-2">₹{discountedPrice}</td>
+                    <td className="border p-2">₹{finalRate}</td>
                     <td className="border p-2">
                       <input type="number" min="0" value={qty[prod.id] || 0} onChange={e => handleQtyChange(prod.id, e.target.value)} className="w-16 p-1 border rounded" />
                     </td>
