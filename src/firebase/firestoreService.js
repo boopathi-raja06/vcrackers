@@ -39,6 +39,10 @@ export const addOrder = async (order) => {
   await addDoc(collection(db, "orders"), order);
 };
 
+export const updateOrderStatus = async (orderId, status) => {
+  await updateDoc(doc(db, "orders", orderId), { status });
+};
+
 // Gallery
 export const getGallery = (callback) => {
   return onSnapshot(collection(db, "gallery"), (snapshot) => {

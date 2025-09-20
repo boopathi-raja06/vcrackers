@@ -12,6 +12,7 @@ import AdminLayout from './admin/AdminLayout';
 import DashboardStats from './admin/DashboardStats';
 import ProductManagement from './admin/ProductManagement';
 import ProductsPage from './admin/ProductsPage';
+import OrdersPage from './admin/OrdersPage';
 
 import Navbar from './components/Navbar';
 import FloatingIcons from './components/FloatingIcons';
@@ -46,6 +47,7 @@ function App() {
           {/* Add more admin routes here: orders, etc. */}
         </Route>
         <Route path="/admin/products" element={<ProductsPage />} />
+        <Route path="/admin/orders" element={<OrdersPage />} />
         {/* Add more standalone admin routes here if needed */}
       </Routes>
     </Router>

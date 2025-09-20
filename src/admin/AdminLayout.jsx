@@ -7,7 +7,7 @@ import AdminNavbar from './AdminNavbar';
 export default function AdminLayout() {
   const options = [
     { name: 'Products', path: '/admin/products' },
-    { name: 'Orders', path: '/admin/dashboard/orders' },
+    { name: 'Orders', path: '/admin/orders' },
     { name: 'Offers', path: '/admin/dashboard/offers' },
     { name: 'Payment', path: '/admin/dashboard/payment' },
     { name: 'Contact', path: '/admin/dashboard/contact' },

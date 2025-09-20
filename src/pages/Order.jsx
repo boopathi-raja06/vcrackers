@@ -13,7 +13,7 @@ const Order = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow mt-8">
+  <div className="w-full p-6 bg-white rounded-lg shadow mt-8">
       <h1 className="text-2xl font-bold text-red-700 mb-4">Estimate / Order</h1>
       <OrderProductTable cartItems={cartItems} setCartItems={setCartItems} />
       <button

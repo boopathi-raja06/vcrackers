@@ -26,7 +26,8 @@ export default function CheckoutDrawer({ open, onClose, cartItems }) {
         qty: item.qty,
         price: item.price
       })),
-      total,
+      grandTotal: total,
+      status: 'Pending',
       createdAt: serverTimestamp()
     });
     setLoading(false);
