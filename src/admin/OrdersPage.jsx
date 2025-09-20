@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getOrders, updateOrderStatus, updateOrderTransport, updateOrderType } from '../firebase/firestoreService';
+import { getOrders, updateOrderStatus, updateOrderTransport, updateOrderType, deleteOrder } from '../firebase/firestoreService';
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -75,6 +75,110 @@ export default function OrdersPage() {
     } catch (error) {
       console.error('Error updating type:', error);
       alert('Failed to update order type: ' + error.message);
+    }
+  };
+
+  const handleEditOrder = (order) => {
+    // TODO: Open edit modal or navigate to edit page
+    console.log('Edit order:', order);
+    alert(`Edit functionality for Order ID: ${order.orderId}\nThis will open an edit form in a future update.`);
+  };
+
+  const handlePrintOrder = (order) => {
+    // Create printable content
+    const printContent = `
+      <div style="font-family: Arial, sans-serif; padding: 20px;">
+        <h2 style="color: #dc2626; margin-bottom: 20px;">VEENA CRACKERS - Order Invoice</h2>
+        
+        <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+          <h3>Order Details</h3>
+          <p><strong>Order ID:</strong> ${order.orderId || 'N/A'}</p>
+          <p><strong>Date:</strong> ${order.date ? new Date(order.date.toDate()).toLocaleDateString() : 'N/A'}</p>
+          <p><strong>Status:</strong> ${order.status || 'Pending'}</p>
+          <p><strong>Type:</strong> ${order.type || 'TO-PAY'}</p>
+          <p><strong>Transport:</strong> ${order.transport || 'N/A'}</p>
+        </div>
+
+        <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+          <h3>Customer Details</h3>
+          <p><strong>Name:</strong> ${order.customerName || 'N/A'}</p>
+          <p><strong>Phone:</strong> ${order.phone || 'N/A'}</p>
+          <p><strong>Email:</strong> ${order.email || 'N/A'}</p>
+          <p><strong>Address:</strong> ${order.address || 'N/A'}</p>
+          <p><strong>Place:</strong> ${order.place || 'N/A'}</p>
+        </div>
+
+        <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+          <h3>Order Items</h3>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="background-color: #f3f4f6;">
+                <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Item</th>
+                <th style="border: 1px solid #ccc; padding: 8px; text-align: center;">Quantity</th>
+                <th style="border: 1px solid #ccc; padding: 8px; text-align: right;">Unit Price</th>
+                <th style="border: 1px solid #ccc; padding: 8px; text-align: right;">Discount</th>
+                <th style="border: 1px solid #ccc; padding: 8px; text-align: right;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${order.items?.map(item => `
+                <tr>
+                  <td style="border: 1px solid #ccc; padding: 8px;">${item.name || 'N/A'}</td>
+                  <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">${item.quantity || 0}</td>
+                  <td style="border: 1px solid #ccc; padding: 8px; text-align: right;">₹${item.unitPrice || 0}</td>
+                  <td style="border: 1px solid #ccc; padding: 8px; text-align: right;">₹${item.discount || 0}</td>
+                  <td style="border: 1px solid #ccc; padding: 8px; text-align: right;">₹${item.total || (item.quantity || 0) * (item.finalPrice || item.unitPrice || 0)}</td>
+                </tr>
+              `).join('') || '<tr><td colspan="5" style="text-align: center; padding: 8px;">No items</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+
+        <div style="border: 1px solid #ccc; padding: 15px;">
+          <h3>Payment Summary</h3>
+          <p><strong>Subtotal:</strong> ₹${order.total || 0}</p>
+          <p><strong>Discount:</strong> ₹${order.discount || 0}</p>
+          <p><strong>Net Amount:</strong> ₹${order.netAmount || order.totalAmount || order.total || 0}</p>
+        </div>
+      </div>
+    `;
+
+    // Open print window
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Order Invoice - ${order.orderId}</title>
+        </head>
+        <body>
+          ${printContent}
+          <script>
+            window.onload = function() {
+              window.print();
+              window.onafterprint = function() {
+                window.close();
+              };
+            };
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  };
+
+  const handleDeleteOrder = async (order) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete this order?\n\nOrder ID: ${order.orderId}\nCustomer: ${order.customerName}\n\nThis action cannot be undone.`
+    );
+    
+    if (confirmDelete) {
+      try {
+        await deleteOrder(order.id);
+        // Orders will be updated automatically through the real-time listener
+      } catch (error) {
+        console.error('Error deleting order:', error);
+        alert('Failed to delete order: ' + error.message);
+      }
     }
   };
 
@@ -280,13 +384,7 @@ export default function OrdersPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        <input
-                          type="text"
-                          value={order.transport || ''}
-                          onChange={(e) => handleTransportUpdate(order.id, e.target.value)}
-                          placeholder="Enter transport details"
-                          className="w-full text-sm border rounded px-2 py-1 focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                        />
+                        {order.transport || 'N/A'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         <select
@@ -304,15 +402,49 @@ export default function OrdersPage() {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <select
-                          value={order.status || 'Pending'}
-                          onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
-                          className="text-sm border rounded px-2 py-1 focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                        >
-                          <option value="Pending">Pending</option>
-                          <option value="Dispatched">Dispatched</option>
-                          <option value="Delivered">Delivered</option>
-                        </select>
+                        <div className="flex flex-col space-y-2">
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => handleEditOrder(order)}
+                              className="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-600 hover:text-blue-800 border border-blue-300 rounded hover:bg-blue-50 transition-colors"
+                              title="Edit Order"
+                            >
+                              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                              </svg>
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => handlePrintOrder(order)}
+                              className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-600 hover:text-green-800 border border-green-300 rounded hover:bg-green-50 transition-colors"
+                              title="Print Order"
+                            >
+                              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                              </svg>
+                              Print
+                            </button>
+                            <button
+                              onClick={() => handleDeleteOrder(order)}
+                              className="inline-flex items-center px-2 py-1 text-xs font-medium text-red-600 hover:text-red-800 border border-red-300 rounded hover:bg-red-50 transition-colors"
+                              title="Delete Order"
+                            >
+                              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                              Delete
+                            </button>
+                          </div>
+                          <select
+                            value={order.status || 'Pending'}
+                            onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
+                            className="text-sm border rounded px-2 py-1 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                          >
+                            <option value="Pending">Pending</option>
+                            <option value="Dispatched">Dispatched</option>
+                            <option value="Delivered">Delivered</option>
+                          </select>
+                        </div>
                       </td>
                     </tr>
                   );

@@ -103,6 +103,16 @@ export const updateOrderType = async (docId, type) => {
   }
 };
 
+export const deleteOrder = async (docId) => {
+  try {
+    await deleteDoc(doc(db, "orders", docId));
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting order:', error);
+    throw new Error(`Failed to delete order: ${error.message}`);
+  }
+};
+
 // Get single order by document ID
 export const getOrderById = async (docId) => {
   try {
