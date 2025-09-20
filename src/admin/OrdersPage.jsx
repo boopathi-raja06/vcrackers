@@ -7,6 +7,7 @@ export default function OrdersPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [viewOrder, setViewOrder] = useState(null);
 
   useEffect(() => {
     const unsubscribe = getOrders((orderList) => {
@@ -82,6 +83,14 @@ export default function OrdersPage() {
     // TODO: Open edit modal or navigate to edit page
     console.log('Edit order:', order);
     alert(`Edit functionality for Order ID: ${order.orderId}\nThis will open an edit form in a future update.`);
+  };
+
+  const handleViewOrder = (order) => {
+    setViewOrder(order);
+  };
+
+  const handleCloseView = () => {
+    setViewOrder(null);
   };
 
   const handlePrintOrder = (order) => {
@@ -283,9 +292,6 @@ export default function OrdersPage() {
                   Customer
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Products
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   No. of Items
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -317,7 +323,7 @@ export default function OrdersPage() {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan="12" className="px-6 py-8 text-center text-gray-500">
+                  <td colSpan="11" className="px-6 py-8 text-center text-gray-500">
                     {search || statusFilter !== 'all' ? 'No orders found matching your criteria.' : 'No orders found.'}
                   </td>
                 </tr>
@@ -343,25 +349,6 @@ export default function OrdersPage() {
                         </div>
                         <div className="text-xs text-gray-500">
                           {order.email || 'N/A'}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm text-gray-900 max-w-xs">
-                          {order.items?.map((item, idx) => (
-                            <div key={idx} className="flex items-center space-x-2 mb-1">
-                              <div className="flex-shrink-0 h-8 w-8">
-                                <svg className="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <rect x="3" y="7" width="18" height="14" rx="3" stroke="currentColor" strokeWidth="2" fill="#f3f4f6" />
-                                  <rect x="8" y="3" width="8" height="4" rx="1" stroke="#9ca3af" strokeWidth="2" fill="#e5e7eb" />
-                                  <circle cx="12" cy="14" r="3" stroke="#9ca3af" strokeWidth="2" fill="#e5e7eb" />
-                                </svg>
-                              </div>
-                              <span className="text-xs">
-                                {item.name} (x{item.quantity || 0})
-                                <div className="text-gray-500">₹{item.unitPrice} - ₹{item.discount || 0} = ₹{item.finalPrice || item.unitPrice}</div>
-                              </span>
-                            </div>
-                          )) || 'No items'}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -413,6 +400,17 @@ export default function OrdersPage() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                               </svg>
                               Edit
+                            </button>
+                            <button
+                              onClick={() => handleViewOrder(order)}
+                              className="inline-flex items-center px-2 py-1 text-xs font-medium text-purple-600 hover:text-purple-800 border border-purple-300 rounded hover:bg-purple-50 transition-colors"
+                              title="View Order Details"
+                            >
+                              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                              </svg>
+                              View
                             </button>
                             <button
                               onClick={() => handlePrintOrder(order)}
@@ -480,6 +478,139 @@ export default function OrdersPage() {
           <div className="text-sm text-gray-500">Delivered</div>
         </div>
       </div>
+
+      {/* View Order Modal */}
+      {viewOrder && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+              <div className="absolute inset-0 bg-gray-500 opacity-75" onClick={handleCloseView}></div>
+            </div>
+
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900">
+                    Order Details - {viewOrder.orderId}
+                  </h3>
+                  <button
+                    onClick={handleCloseView}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Order Information */}
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-gray-800 mb-3">Order Information</h4>
+                    <div className="space-y-2 text-sm">
+                      <div><span className="font-medium">Order ID:</span> {viewOrder.orderId || 'N/A'}</div>
+                      <div><span className="font-medium">Date:</span> {viewOrder.date ? new Date(viewOrder.date.toDate()).toLocaleDateString() : 'N/A'}</div>
+                      <div><span className="font-medium">Status:</span> 
+                        <span className={`ml-2 px-2 py-1 text-xs rounded-full ${
+                          viewOrder.status === 'Delivered' ? 'bg-green-100 text-green-800' :
+                          viewOrder.status === 'Dispatched' ? 'bg-blue-100 text-blue-800' :
+                          'bg-yellow-100 text-yellow-800'
+                        }`}>
+                          {viewOrder.status || 'Pending'}
+                        </span>
+                      </div>
+                      <div><span className="font-medium">Type:</span> 
+                        <span className={`ml-2 px-2 py-1 text-xs rounded-full ${
+                          viewOrder.type === 'PAID' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'
+                        }`}>
+                          {viewOrder.type || 'TO-PAY'}
+                        </span>
+                      </div>
+                      <div><span className="font-medium">Transport:</span> {viewOrder.transport || 'N/A'}</div>
+                    </div>
+                  </div>
+
+                  {/* Customer Information */}
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-gray-800 mb-3">Customer Information</h4>
+                    <div className="space-y-2 text-sm">
+                      <div><span className="font-medium">Name:</span> {viewOrder.customerName || 'N/A'}</div>
+                      <div><span className="font-medium">Phone:</span> {viewOrder.phone || 'N/A'}</div>
+                      <div><span className="font-medium">Email:</span> {viewOrder.email || 'N/A'}</div>
+                      <div><span className="font-medium">Address:</span> {viewOrder.address || 'N/A'}</div>
+                      <div><span className="font-medium">Place:</span> {viewOrder.place || 'N/A'}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Order Items */}
+                <div className="mt-6">
+                  <h4 className="font-semibold text-gray-800 mb-3">Order Items</h4>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Price</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Discount</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Final Price</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {viewOrder.items?.map((item, idx) => (
+                          <tr key={idx}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.name || 'N/A'}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{item.quantity || 0}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">₹{item.unitPrice || 0}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600">₹{item.discount || 0}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">₹{item.finalPrice || item.unitPrice || 0}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">₹{item.total || (item.quantity || 0) * (item.finalPrice || item.unitPrice || 0)}</td>
+                          </tr>
+                        )) || (
+                          <tr>
+                            <td colSpan="6" className="px-6 py-4 text-center text-gray-500">No items found</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Payment Summary */}
+                <div className="mt-6 bg-gray-50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-gray-800 mb-3">Payment Summary</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <span className="font-medium">Subtotal:</span>
+                      <div className="text-lg font-bold">₹{viewOrder.total || 0}</div>
+                    </div>
+                    <div>
+                      <span className="font-medium text-green-600">Total Discount:</span>
+                      <div className="text-lg font-bold text-green-600">₹{viewOrder.discount || 0}</div>
+                    </div>
+                    <div>
+                      <span className="font-medium">Net Amount:</span>
+                      <div className="text-xl font-bold text-red-600">₹{viewOrder.netAmount || viewOrder.totalAmount || viewOrder.total || 0}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button
+                  type="button"
+                  onClick={handleCloseView}
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
