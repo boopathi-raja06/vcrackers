@@ -38,7 +38,9 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
         id: p.id,
         name: p.name,
         qty: newQty[p.id],
-        price: p.rsRate,
+        price: p.rsRate, // Final price after discount
+        originalPrice: p.price, // Original price before discount
+        discountAmount: p.rsDiscountAmount || 0, // Discount amount per unit
       }));
     setCartItems(updatedCart);
   };

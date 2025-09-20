@@ -10,20 +10,32 @@ export default function CheckoutDrawer({ open, onClose, cartItems, onOrderPlaced
     email: "",
     place: ""
   });
-  const [discount, setDiscount] = useState(0); // Add discount state
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  // Calculate totals using unified schema approach
-  const subtotal = cartItems.reduce((sum, item) => {
+  // Calculate totals with automatic discount from product rsDiscountAmount
+  const subtotalWithDiscount = cartItems.reduce((sum, item) => {
     const quantity = item.qty || item.quantity || 1;
-    const price = item.price || item.unitPrice || 0;
-    return sum + (quantity * price);
+    const finalPrice = item.price || item.unitPrice || 0; // This should be rsRate (after discount)
+    return sum + (quantity * finalPrice);
   }, 0);
   
-  // Calculate total after discount
-  const total = Math.max(0, subtotal - discount);
+  // Calculate total discount amount from individual products
+  const totalDiscount = cartItems.reduce((sum, item) => {
+    const quantity = item.qty || item.quantity || 1;
+    const itemDiscount = item.discountAmount || 0; // rsDiscountAmount per unit
+    return sum + (quantity * itemDiscount);
+  }, 0);
+  
+  // Calculate subtotal before any discount
+  const subtotal = cartItems.reduce((sum, item) => {
+    const quantity = item.qty || item.quantity || 1;
+    const originalPrice = item.originalPrice || 0; // Original price before discount
+    return sum + (quantity * originalPrice);
+  }, 0);
+  
+  const total = subtotalWithDiscount;
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -44,8 +56,8 @@ export default function CheckoutDrawer({ open, onClose, cartItems, onOrderPlaced
 
     try {
       // Debug logging
-      console.log('Order creation - discount value:', discount);
-      console.log('Order creation - subtotal:', subtotal);
+      console.log('Order creation - totalDiscount value:', totalDiscount);
+      console.log('Order creation - subtotal before discount:', subtotal);
       console.log('Order creation - total after discount:', total);
       
       // Create unified order object using schema
@@ -59,7 +71,7 @@ export default function CheckoutDrawer({ open, onClose, cartItems, onOrderPlaced
         },
         cartItems,
         {
-          discount: discount, // Use actual discount value
+          discount: totalDiscount, // Use calculated discount from products
           transport: '', // Can be set later by admin
           type: 'TO-PAY', // Default payment type
           status: 'Pending' // Initial status
@@ -78,7 +90,6 @@ export default function CheckoutDrawer({ open, onClose, cartItems, onOrderPlaced
         setTimeout(() => {
           setSuccess(false);
           setForm({ name: "", phone: "", address: "", email: "", place: "" });
-          setDiscount(0); // Reset discount
           if (onOrderPlaced) onOrderPlaced();
           else onClose();
         }, 2000);
@@ -165,49 +176,37 @@ export default function CheckoutDrawer({ open, onClose, cartItems, onOrderPlaced
                   <ul className="space-y-2 mb-3">
                     {cartItems.map(item => {
                       const quantity = item.qty || item.quantity || 1;
-                      const price = item.price || item.unitPrice || 0;
+                      const originalPrice = item.originalPrice || 0;
+                      const finalPrice = item.price || item.unitPrice || 0;
+                      const itemDiscount = item.discountAmount || 0;
+                      
                       return (
-                        <li key={item.id} className="flex justify-between items-center text-sm">
-                          <span className="flex-1">{item.name}</span>
-                          <span className="mx-2 text-gray-600">x {quantity}</span>
-                          <span className="font-medium">₹{(price * quantity).toLocaleString()}</span>
+                        <li key={item.id} className="text-sm">
+                          <div className="flex justify-between items-center">
+                            <span className="flex-1">{item.name}</span>
+                            <span className="mx-2 text-gray-600">x {quantity}</span>
+                            <span className="font-medium">₹{(finalPrice * quantity).toLocaleString()}</span>
+                          </div>
+                          {itemDiscount > 0 && (
+                            <div className="flex justify-between items-center text-xs text-green-600 mt-1">
+                              <span className="ml-4">Item discount: ₹{itemDiscount.toLocaleString()} each</span>
+                              <span>-₹{(itemDiscount * quantity).toLocaleString()}</span>
+                            </div>
+                          )}
                         </li>
                       );
                     })}
                   </ul>
                   
-                  {/* Discount Input */}
-                  <div className="mb-3 pt-3 border-t">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Discount Amount (Optional)
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
-                      <input
-                        type="number"
-                        min="0"
-                        max={subtotal}
-                        step="0.01"
-                        value={discount}
-                        onChange={(e) => {
-                          const value = parseFloat(e.target.value) || 0;
-                          setDiscount(Math.max(0, Math.min(subtotal, value)));
-                        }}
-                        placeholder="0"
-                        className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                      />
-                    </div>
-                  </div>
-                  
                   <div className="border-t pt-3 space-y-2">
                     <div className="flex justify-between items-center text-sm">
-                      <span>Subtotal:</span>
+                      <span>Subtotal (before discount):</span>
                       <span>₹{subtotal.toLocaleString()}</span>
                     </div>
-                    {discount > 0 && (
+                    {totalDiscount > 0 && (
                       <div className="flex justify-between items-center text-sm text-green-600">
-                        <span>Discount:</span>
-                        <span>-₹{discount.toLocaleString()}</span>
+                        <span>Total Product Discounts:</span>
+                        <span>-₹{totalDiscount.toLocaleString()}</span>
                       </div>
                     )}
                     <div className="flex justify-between items-center font-bold text-lg border-t pt-2">
