@@ -10,16 +10,20 @@ export default function CheckoutDrawer({ open, onClose, cartItems, onOrderPlaced
     email: "",
     place: ""
   });
+  const [discount, setDiscount] = useState(0); // Add discount state
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
   // Calculate totals using unified schema approach
-  const total = cartItems.reduce((sum, item) => {
+  const subtotal = cartItems.reduce((sum, item) => {
     const quantity = item.qty || item.quantity || 1;
     const price = item.price || item.unitPrice || 0;
     return sum + (quantity * price);
   }, 0);
+  
+  // Calculate total after discount
+  const total = Math.max(0, subtotal - discount);
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -50,7 +54,7 @@ export default function CheckoutDrawer({ open, onClose, cartItems, onOrderPlaced
         },
         cartItems,
         {
-          discount: 0, // No discount for now
+          discount: discount, // Use actual discount value
           transport: '', // Can be set later by admin
           type: 'TO-PAY', // Default payment type
           status: 'Pending' // Initial status
@@ -65,6 +69,7 @@ export default function CheckoutDrawer({ open, onClose, cartItems, onOrderPlaced
         setTimeout(() => {
           setSuccess(false);
           setForm({ name: "", phone: "", address: "", email: "", place: "" });
+          setDiscount(0); // Reset discount
           if (onOrderPlaced) onOrderPlaced();
           else onClose();
         }, 2000);
@@ -161,8 +166,38 @@ export default function CheckoutDrawer({ open, onClose, cartItems, onOrderPlaced
                       );
                     })}
                   </ul>
-                  <div className="border-t pt-3">
-                    <div className="flex justify-between items-center font-bold text-lg">
+                  
+                  {/* Discount Input */}
+                  <div className="mb-3 pt-3 border-t">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Discount Amount (Optional)
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
+                      <input
+                        type="number"
+                        min="0"
+                        max={subtotal}
+                        value={discount}
+                        onChange={(e) => setDiscount(Math.max(0, Math.min(subtotal, parseInt(e.target.value) || 0)))}
+                        placeholder="0"
+                        className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="border-t pt-3 space-y-2">
+                    <div className="flex justify-between items-center text-sm">
+                      <span>Subtotal:</span>
+                      <span>₹{subtotal.toLocaleString()}</span>
+                    </div>
+                    {discount > 0 && (
+                      <div className="flex justify-between items-center text-sm text-green-600">
+                        <span>Discount:</span>
+                        <span>-₹{discount.toLocaleString()}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between items-center font-bold text-lg border-t pt-2">
                       <span>Total Amount:</span>
                       <span className="text-red-600">₹{total.toLocaleString()}</span>
                     </div>
