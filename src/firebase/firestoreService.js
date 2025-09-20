@@ -6,8 +6,10 @@ import {
   updateDoc,
   deleteDoc,
   doc,
-  onSnapshot
+  onSnapshot,
+  getDoc
 } from "firebase/firestore";
+import { validateOrder } from "./orderSchema";
 
 // Products
 export const getProducts = (callback) => {
@@ -28,19 +30,62 @@ export const deleteProduct = async (id) => {
   await deleteDoc(doc(db, "products", id));
 };
 
-// Orders
+// Orders with unified schema
 export const getOrders = (callback) => {
   return onSnapshot(collection(db, "orders"), (snapshot) => {
     callback(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
   });
 };
 
-export const addOrder = async (order) => {
-  await addDoc(collection(db, "orders"), order);
+export const addOrder = async (orderData) => {
+  // Validate order data against unified schema
+  const validation = validateOrder(orderData);
+  
+  if (!validation.isValid) {
+    throw new Error(`Order validation failed: ${validation.errors.join(', ')}`);
+  }
+  
+  try {
+    const docRef = await addDoc(collection(db, "orders"), orderData);
+    return { success: true, orderId: orderData.orderId, docId: docRef.id };
+  } catch (error) {
+    console.error('Error adding order:', error);
+    throw new Error(`Failed to save order: ${error.message}`);
+  }
 };
 
-export const updateOrderStatus = async (orderId, status) => {
-  await updateDoc(doc(db, "orders", orderId), { status });
+export const updateOrderStatus = async (docId, newStatus) => {
+  // Validate status
+  const validStatuses = ['Pending', 'Dispatched', 'Delivered'];
+  if (!validStatuses.includes(newStatus)) {
+    throw new Error(`Invalid status: ${newStatus}. Valid statuses are: ${validStatuses.join(', ')}`);
+  }
+  
+  try {
+    await updateDoc(doc(db, "orders", docId), { 
+      status: newStatus,
+      deliveryStatus: newStatus // Keep both fields in sync
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    throw new Error(`Failed to update order status: ${error.message}`);
+  }
+};
+
+// Get single order by document ID
+export const getOrderById = async (docId) => {
+  try {
+    const orderDoc = await getDoc(doc(db, "orders", docId));
+    if (orderDoc.exists()) {
+      return { id: orderDoc.id, ...orderDoc.data() };
+    } else {
+      throw new Error('Order not found');
+    }
+  } catch (error) {
+    console.error('Error fetching order:', error);
+    throw new Error(`Failed to fetch order: ${error.message}`);
+  }
 };
 
 // Gallery

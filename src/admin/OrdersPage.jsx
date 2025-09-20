@@ -17,31 +17,44 @@ export default function OrdersPage() {
     return () => unsubscribe();
   }, []);
 
-  // Filter and search orders
+  // Filter and search orders using unified schema
   useEffect(() => {
     let filtered = orders;
 
-    // Filter by status
+    // Filter by status - use unified 'status' field
     if (statusFilter !== 'all') {
       filtered = filtered.filter(order => order.status === statusFilter);
     }
 
-    // Search by customer name or order ID
+    // Search by multiple fields from unified schema
     if (search) {
-      filtered = filtered.filter(order => 
-        order.customerName?.toLowerCase().includes(search.toLowerCase()) ||
-        order.id?.toLowerCase().includes(search.toLowerCase())
-      );
+      filtered = filtered.filter(order => {
+        const searchTerm = search.toLowerCase();
+        const matchesCustomer = order.customerName?.toLowerCase().includes(searchTerm);
+        const matchesPhone = order.phone?.toLowerCase().includes(searchTerm);
+        const matchesOrderId = order.orderId?.toLowerCase().includes(searchTerm);
+        const matchesId = order.id?.toLowerCase().includes(searchTerm);
+        const matchesAddress = order.address?.toLowerCase().includes(searchTerm);
+        const matchesPlace = order.place?.toLowerCase().includes(searchTerm);
+        const matchesTransport = order.transport?.toLowerCase().includes(searchTerm);
+        const matchesType = order.type?.toLowerCase().includes(searchTerm);
+        const matchesEmail = order.email?.toLowerCase().includes(searchTerm);
+        
+        return matchesCustomer || matchesPhone || matchesOrderId || matchesId || 
+               matchesAddress || matchesPlace || matchesTransport || matchesType || matchesEmail;
+      });
     }
 
     setFilteredOrders(filtered);
   }, [orders, search, statusFilter]);
 
-  const handleStatusUpdate = async (orderId, newStatus) => {
+  const handleStatusUpdate = async (docId, newStatus) => {
     try {
-      await updateOrderStatus(orderId, newStatus);
+      await updateOrderStatus(docId, newStatus);
+      // Orders will be updated automatically through the real-time listener
     } catch (error) {
-      console.error('Error updating order status:', error);
+      console.error('Error updating status:', error);
+      alert('Failed to update order status: ' + error.message);
     }
   };
 
@@ -52,6 +65,14 @@ export default function OrdersPage() {
       case 'Delivered': return 'bg-green-100 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  // Calculate order statistics
+  const orderStats = {
+    total: orders.length,
+    pending: orders.filter(order => order.status === 'Pending').length,
+    dispatched: orders.filter(order => order.status === 'Dispatched').length,
+    delivered: orders.filter(order => order.status === 'Delivered').length
   };
 
   if (loading) {
@@ -65,8 +86,28 @@ export default function OrdersPage() {
   return (
     <div className="p-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-500 to-red-700 rounded-lg p-6 mb-6 text-white text-2xl font-bold text-center">
-        Orders Management
+      <div className="bg-gradient-to-r from-red-500 to-red-700 rounded-lg p-6 mb-6 text-white">
+        <h1 className="text-2xl font-bold text-center mb-4">Orders Management</h1>
+        
+        {/* Order Statistics */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div className="bg-white/20 rounded-lg p-3">
+            <div className="text-2xl font-bold">{orderStats.total}</div>
+            <div className="text-sm opacity-90">Total Orders</div>
+          </div>
+          <div className="bg-yellow-500/30 rounded-lg p-3">
+            <div className="text-2xl font-bold">{orderStats.pending}</div>
+            <div className="text-sm opacity-90">Pending</div>
+          </div>
+          <div className="bg-blue-500/30 rounded-lg p-3">
+            <div className="text-2xl font-bold">{orderStats.dispatched}</div>
+            <div className="text-sm opacity-90">Dispatched</div>
+          </div>
+          <div className="bg-green-500/30 rounded-lg p-3">
+            <div className="text-2xl font-bold">{orderStats.delivered}</div>
+            <div className="text-sm opacity-90">Delivered</div>
+          </div>
+        </div>
       </div>
 
       {/* Search and Filter Controls */}
@@ -79,7 +120,7 @@ export default function OrdersPage() {
             </label>
             <input
               type="text"
-              placeholder="Search by Customer Name or Order ID..."
+              placeholder="Search by Customer, Phone, Order ID, Email..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
@@ -124,6 +165,9 @@ export default function OrdersPage() {
                   Total Qty
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Discount
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Final Amount
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -131,6 +175,12 @@ export default function OrdersPage() {
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Delivery Address
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Transport
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
@@ -143,19 +193,22 @@ export default function OrdersPage() {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan="9" className="px-6 py-8 text-center text-gray-500">
+                  <td colSpan="12" className="px-6 py-8 text-center text-gray-500">
                     {search || statusFilter !== 'all' ? 'No orders found matching your criteria.' : 'No orders found.'}
                   </td>
                 </tr>
               ) : (
                 filteredOrders.map((order) => {
-                  const totalQuantity = order.items?.reduce((sum, item) => sum + item.qty, 0) || 0;
-                  const orderDate = order.createdAt ? new Date(order.createdAt.toDate()).toLocaleDateString() : 'N/A';
+                  // Use unified schema fields
+                  const totalQuantity = order.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
+                  const orderDate = order.date ? 
+                    (order.date.toDate ? new Date(order.date.toDate()).toLocaleDateString() : new Date(order.date).toLocaleDateString()) : 'N/A';
 
                   return (
                     <tr key={order.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {order.id?.slice(-8) || 'N/A'}
+                        <div className="font-mono">{order.orderId || 'N/A'}</div>
+                        <div className="text-xs text-gray-500">Doc: {order.id?.slice(-6)}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">
@@ -163,6 +216,9 @@ export default function OrdersPage() {
                         </div>
                         <div className="text-sm text-gray-500">
                           {order.phone || 'N/A'}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {order.email || 'N/A'}
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -177,7 +233,8 @@ export default function OrdersPage() {
                                 </svg>
                               </div>
                               <span className="text-xs">
-                                {item.name} (x{item.qty})
+                                {item.name} (x{item.quantity || 0})
+                                <div className="text-gray-500">₹{item.unitPrice} - ₹{item.discount || 0} = ₹{item.finalPrice || item.unitPrice}</div>
                               </span>
                             </div>
                           )) || 'No items'}
@@ -186,8 +243,12 @@ export default function OrdersPage() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {totalQuantity}
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ₹{order.discount || 0}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        ₹{order.grandTotal || 0}
+                        <div>₹{order.totalAmount || order.total || 0}</div>
+                        <div className="text-xs text-gray-500">Net: ₹{order.netAmount || order.totalAmount || order.total || 0}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {orderDate}
@@ -195,7 +256,18 @@ export default function OrdersPage() {
                       <td className="px-6 py-4">
                         <div className="text-sm text-gray-900 max-w-xs">
                           {order.address || 'N/A'}
+                          {order.place && <div className="text-xs text-gray-500">{order.place}</div>}
                         </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {order.transport || 'N/A'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          order.type === 'PAID' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'
+                        }`}>
+                          {order.type || 'TO-PAY'}
+                        </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(order.status)}`}>
