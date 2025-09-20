@@ -162,7 +162,7 @@ export default function OrdersPage() {
                   Products
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Total Qty
+                  No. of Items
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Discount
@@ -200,7 +200,7 @@ export default function OrdersPage() {
               ) : (
                 filteredOrders.map((order) => {
                   // Use unified schema fields
-                  const totalQuantity = order.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
+                  const numberOfItems = order.items?.length || 0; // Number of different items, not total quantity
                   const orderDate = order.date ? 
                     (order.date.toDate ? new Date(order.date.toDate()).toLocaleDateString() : new Date(order.date).toLocaleDateString()) : 'N/A';
 
@@ -241,7 +241,7 @@ export default function OrdersPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {totalQuantity}
+                        {numberOfItems}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         ₹{order.discount || 0}
