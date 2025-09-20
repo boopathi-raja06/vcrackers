@@ -66,11 +66,19 @@ export const calculateOrderTotals = (items, overallDiscount = 0) => {
   // Sum of all item totals (after item-level discounts)
   const total = items.reduce((sum, item) => sum + (item.total || 0), 0);
   
+  // Debug logging
+  console.log('calculateOrderTotals - items:', items);
+  console.log('calculateOrderTotals - total before discount:', total);
+  console.log('calculateOrderTotals - overallDiscount:', overallDiscount);
+  
   // Apply overall discount
   const netAmount = Math.max(0, total - overallDiscount);
   
   // For now, totalAmount is same as netAmount (can add taxes, shipping later)
   const totalAmount = netAmount;
+
+  console.log('calculateOrderTotals - netAmount:', netAmount);
+  console.log('calculateOrderTotals - totalAmount:', totalAmount);
 
   return {
     total,
@@ -91,6 +99,11 @@ export const createOrderObject = (clientData, cartItems, options = {}) => {
   const processedItems = processOrderItems(cartItems);
   const overallDiscount = options.discount || 0;
   const totals = calculateOrderTotals(processedItems, overallDiscount);
+  
+  // Debug logging
+  console.log('orderSchema - options.discount:', options.discount);
+  console.log('orderSchema - overallDiscount:', overallDiscount);
+  console.log('orderSchema - totals:', totals);
   
   // Calculate expected delivery date (default: 3 days from now)
   const deliveryDate = options.deliveryDate || new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);

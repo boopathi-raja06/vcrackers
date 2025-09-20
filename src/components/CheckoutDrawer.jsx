@@ -43,6 +43,11 @@ export default function CheckoutDrawer({ open, onClose, cartItems, onOrderPlaced
     setError('');
 
     try {
+      // Debug logging
+      console.log('Order creation - discount value:', discount);
+      console.log('Order creation - subtotal:', subtotal);
+      console.log('Order creation - total after discount:', total);
+      
       // Create unified order object using schema
       const orderData = createOrderObject(
         {
@@ -60,6 +65,10 @@ export default function CheckoutDrawer({ open, onClose, cartItems, onOrderPlaced
           status: 'Pending' // Initial status
         }
       );
+
+      // Debug logging for order data
+      console.log('Created order data:', orderData);
+      console.log('Order discount field:', orderData.discount);
 
       // Add order to Firestore
       const result = await addOrder(orderData);
@@ -178,8 +187,12 @@ export default function CheckoutDrawer({ open, onClose, cartItems, onOrderPlaced
                         type="number"
                         min="0"
                         max={subtotal}
+                        step="0.01"
                         value={discount}
-                        onChange={(e) => setDiscount(Math.max(0, Math.min(subtotal, parseInt(e.target.value) || 0)))}
+                        onChange={(e) => {
+                          const value = parseFloat(e.target.value) || 0;
+                          setDiscount(Math.max(0, Math.min(subtotal, value)));
+                        }}
                         placeholder="0"
                         className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       />
