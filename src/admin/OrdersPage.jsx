@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getOrders, updateOrderStatus } from '../firebase/firestoreService';
+import { getOrders, updateOrderStatus, updateOrderTransport, updateOrderType } from '../firebase/firestoreService';
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -55,6 +55,26 @@ export default function OrdersPage() {
     } catch (error) {
       console.error('Error updating status:', error);
       alert('Failed to update order status: ' + error.message);
+    }
+  };
+
+  const handleTransportUpdate = async (docId, transport) => {
+    try {
+      await updateOrderTransport(docId, transport);
+      // Orders will be updated automatically through the real-time listener
+    } catch (error) {
+      console.error('Error updating transport:', error);
+      alert('Failed to update order transport: ' + error.message);
+    }
+  };
+
+  const handleTypeUpdate = async (docId, type) => {
+    try {
+      await updateOrderType(docId, type);
+      // Orders will be updated automatically through the real-time listener
+    } catch (error) {
+      console.error('Error updating type:', error);
+      alert('Failed to update order type: ' + error.message);
     }
   };
 
@@ -260,14 +280,23 @@ export default function OrdersPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {order.transport || 'N/A'}
+                        <input
+                          type="text"
+                          value={order.transport || ''}
+                          onChange={(e) => handleTransportUpdate(order.id, e.target.value)}
+                          placeholder="Enter transport details"
+                          className="w-full text-sm border rounded px-2 py-1 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                        />
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          order.type === 'PAID' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'
-                        }`}>
-                          {order.type || 'TO-PAY'}
-                        </span>
+                        <select
+                          value={order.type || 'TO-PAY'}
+                          onChange={(e) => handleTypeUpdate(order.id, e.target.value)}
+                          className="text-sm border rounded px-2 py-1 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                        >
+                          <option value="TO-PAY">TO-PAY</option>
+                          <option value="PAID">PAID</option>
+                        </select>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(order.status)}`}>

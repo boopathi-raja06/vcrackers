@@ -73,6 +73,36 @@ export const updateOrderStatus = async (docId, newStatus) => {
   }
 };
 
+export const updateOrderTransport = async (docId, transport) => {
+  try {
+    await updateDoc(doc(db, "orders", docId), { 
+      transport: transport || ''
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating order transport:', error);
+    throw new Error(`Failed to update order transport: ${error.message}`);
+  }
+};
+
+export const updateOrderType = async (docId, type) => {
+  // Validate type
+  const validTypes = ['TO-PAY', 'PAID'];
+  if (!validTypes.includes(type)) {
+    throw new Error(`Invalid type: ${type}. Valid types are: ${validTypes.join(', ')}`);
+  }
+  
+  try {
+    await updateDoc(doc(db, "orders", docId), { 
+      type: type
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating order type:', error);
+    throw new Error(`Failed to update order type: ${error.message}`);
+  }
+};
+
 // Get single order by document ID
 export const getOrderById = async (docId) => {
   try {
