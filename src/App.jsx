@@ -10,6 +10,7 @@ import Giftbox from './pages/Giftbox';
 
 import AdminLogin from './pages/AdminLogin';
 import AdminLayout from './admin/AdminLayout';
+import AdminWrapper from './admin/AdminWrapper';
 import DashboardStats from './admin/DashboardStats';
 import ProductManagement from './admin/ProductManagement';
 import ProductsPage from './admin/ProductsPage';
@@ -17,9 +18,11 @@ import OrdersPage from './admin/OrdersPage';
 import OffersPage from './admin/OffersPage';
 import ContactPage from './admin/ContactPage';
 import BannerPage from './admin/BannerPage';
+import GeneralPage from './admin/GeneralPage';
 
 import Navbar from './components/Navbar';
 import FloatingIcons from './components/FloatingIcons';
+import { ColorProvider } from './contexts/ColorProvider';
 
 function App() {
   const [loading, setLoading] = React.useState(true);
@@ -30,15 +33,16 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-80">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-700"></div>
-        </div>
-      )}
-      <Navbar />
-      <FloatingIcons />
-      <Routes>
+    <ColorProvider>
+      <Router>
+        {loading && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-80">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-700"></div>
+          </div>
+        )}
+        <Navbar />
+        <FloatingIcons />
+        <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<Contact />} />
@@ -51,14 +55,18 @@ function App() {
           <Route index element={<DashboardStats />} />
           {/* Add more admin routes here: orders, etc. */}
         </Route>
-        <Route path="/admin/products" element={<ProductsPage />} />
-        <Route path="/admin/orders" element={<OrdersPage />} />
-        <Route path="/admin/offers" element={<OffersPage />} />
-        <Route path="/admin/contact" element={<ContactPage />} />
-        <Route path="/admin/banners" element={<BannerPage />} />
+        <Route path="/admin/*" element={<AdminWrapper />}>
+          <Route path="products" element={<ProductsPage />} />
+          <Route path="orders" element={<OrdersPage />} />
+          <Route path="offers" element={<OffersPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="banners" element={<BannerPage />} />
+          <Route path="general" element={<GeneralPage />} />
+        </Route>
         {/* Add more standalone admin routes here if needed */}
       </Routes>
     </Router>
+    </ColorProvider>
   );
 }
 

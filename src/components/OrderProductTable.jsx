@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../firebase/firestoreService";
+import { useColors } from "../contexts/ColorProvider";
 
 const OrderProductTable = ({ cartItems, setCartItems }) => {
   const [products, setProducts] = useState([]);
   const [qty, setQty] = useState({});
+  
+  const { getColorStyles } = useColors();
+  const { tableHead, tableBody, itemGroup, total } = getColorStyles();
 
   useEffect(() => {
     const unsubscribe = getProducts((prods) => {
@@ -54,21 +58,21 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
     <div>
       {Object.entries(grouped).map(([category, prods]) => (
         <div key={category} className="mb-8">
-          <h2 className="text-xl font-bold mb-4 text-red-700">{category}</h2>
+          <h2 className="text-xl font-bold mb-4 text-red-700 p-3 rounded-lg" style={itemGroup}>{category}</h2>
           <div className="flex justify-center">
             <table className="w-full border mb-4">
               <thead>
-                <tr className="bg-gray-100">
-                  <th className="p-2 border">S.No</th>
-                  <th className="p-2 border">Product Name</th>
-                  <th className="p-2 border">Picture</th>
-                  <th className="p-2 border">Amount/Discount</th>
-                  <th className="p-2 border">Rate</th>
-                  <th className="p-2 border">Qty</th>
-                  <th className="p-2 border">Total</th>
+                <tr style={tableHead}>
+                  <th className="p-2 border" style={{ color: tableHead.color }}>S.No</th>
+                  <th className="p-2 border" style={{ color: tableHead.color }}>Product Name</th>
+                  <th className="p-2 border" style={{ color: tableHead.color }}>Picture</th>
+                  <th className="p-2 border" style={{ color: tableHead.color }}>Amount/Discount</th>
+                  <th className="p-2 border" style={{ color: tableHead.color }}>Rate</th>
+                  <th className="p-2 border" style={{ color: tableHead.color }}>Qty</th>
+                  <th className="p-2 border" style={{ color: tableHead.color }}>Total</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody style={tableBody}>
                 {prods.map((prod, idx) => {
                   const originalPrice =
                     prod.price !== undefined ? prod.price : 0;
@@ -80,8 +84,8 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
                     prod.rsRate !== undefined ? prod.rsRate : 0;
                   return (
                     <tr key={prod.id} className="text-center">
-                      <td className="border p-2">{idx + 1}</td>
-                      <td className="border p-2">{prod.name}</td>
+                      <td className="border p-2" style={{ color: tableBody.color }}>{idx + 1}</td>
+                      <td className="border p-2" style={{ color: tableBody.color }}>{prod.name}</td>
                       <td className="border p-2">
                         <svg
                           className="h-12 w-12 mx-auto text-gray-400"
@@ -129,7 +133,7 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
                           </span>
                         </div>
                       </td>
-                      <td className="border p-2">₹{finalRate}</td>
+                      <td className="border p-2" style={{ color: tableBody.color }}>₹{finalRate}</td>
                       <td className="border p-2">
                         <input
                           type="number"
@@ -141,7 +145,7 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
                           className="w-16 p-1 border rounded"
                         />
                       </td>
-                      <td className="border p-2">
+                      <td className="border p-2" style={{ color: tableBody.color }}>
                         ₹{(qty[prod.id] || 0) * finalRate}
                       </td>
                     </tr>
@@ -153,7 +157,7 @@ const OrderProductTable = ({ cartItems, setCartItems }) => {
         </div>
       ))}
 
-      <div className="text-right font-bold text-lg mb-4">
+      <div className="text-right font-bold text-lg mb-4 p-3 rounded-lg" style={total}>
         Grand Total: ₹{grandTotal}
       </div>
     </div>

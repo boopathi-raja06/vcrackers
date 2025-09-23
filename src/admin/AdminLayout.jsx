@@ -11,7 +11,7 @@ export default function AdminLayout() {
     { name: 'Offers', path: '/admin/offers' },
     { name: 'Contact', path: '/admin/contact' },
     { name: 'Banner Settings', path: '/admin/banners' },
-    { name: 'General', path: '/admin/dashboard/general' },
+    { name: 'General', path: '/admin/general' },
     { name: 'Video', path: '/admin/dashboard/video' },
     { name: 'Pricelist', path: '/admin/dashboard/pricelist' },
   ];

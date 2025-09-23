@@ -276,3 +276,42 @@ export const updateSingleBanner = async (bannerType, imageURL) => {
     throw new Error(`Failed to update ${bannerType} banner: ${error.message}`);
   }
 };
+
+// Color Settings Management
+export const getColorSettings = (callback) => {
+  return onSnapshot(doc(db, "settings", "colors"), (docSnapshot) => {
+    if (docSnapshot.exists()) {
+      callback(docSnapshot.data());
+    } else {
+      // Return default colors if no settings exist
+      const defaultColors = {
+        menuBgColor: '#ffffff',
+        menuTextColor: '#374151',
+        newsBgColor: '#f3f4f6',
+        newsTextColor: '#111827',
+        tableHeadBgColor: '#f9fafb',
+        tableHeadTextColor: '#374151',
+        tableBodyBgColor: '#ffffff',
+        tableBodyTextColor: '#6b7280',
+        itemGroupBgColor: '#f8fafc',
+        itemGroupTextColor: '#475569',
+        totalBgColor: '#3b82f6',
+        totalTextColor: '#ffffff'
+      };
+      callback(defaultColors);
+    }
+  });
+};
+
+export const updateColorSettings = async (colorData) => {
+  try {
+    await setDoc(doc(db, "settings", "colors"), {
+      ...colorData,
+      updatedAt: new Date().toISOString()
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating color settings:', error);
+    throw new Error(`Failed to update color settings: ${error.message}`);
+  }
+};

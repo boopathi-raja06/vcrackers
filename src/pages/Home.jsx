@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SlideInTop, SlideInLeft, SlideInRight, SlideInBottom, StaggeredSlideInBottom } from '../components/MotionWrappers';
 import ProductList from '../components/ProductList';
 import { getOffers, getContact, getBanners } from '../firebase/firestoreService';
+import { useColors } from '../contexts/ColorProvider';
 
 import diwaliBanner from '../assets/banner2.jpg';
 
@@ -26,6 +27,10 @@ const Home = () => {
   const [banners, setBanners] = useState({
     homePage: diwaliBanner
   });
+  
+  const { getColorStyles } = useColors();
+  const newsStyle = getColorStyles().news;
+  const itemGroupStyle = getColorStyles().itemGroup;
 
   useEffect(() => {
     const unsubscribeOffers = getOffers((offersData) => {
@@ -75,7 +80,7 @@ const Home = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Special Offers</h2>
             <div className="grid gap-4">
               {offers.map((offer) => (
-                <div key={offer.id} className="bg-gradient-to-r from-yellow-100 to-orange-100 border-l-4 border-yellow-500 p-4 rounded-lg shadow-md">
+                <div key={offer.id} className="border-l-4 border-yellow-500 p-4 rounded-lg shadow-md" style={newsStyle}>
                   <div className="flex items-center gap-3">
                     {offer.offerIcon && (
                       <div className="w-8 h-8 flex-shrink-0">
@@ -90,8 +95,8 @@ const Home = () => {
                       </div>
                     )}
                     <div className="flex-1">
-                      <h3 className="font-bold text-yellow-800 text-lg">{offer.offerTitle}</h3>
-                      <p className="text-yellow-700">{offer.offerDescription}</p>
+                      <h3 className="font-bold text-lg" style={{ color: newsStyle.color }}>{offer.offerTitle}</h3>
+                      <p style={{ color: newsStyle.color }}>{offer.offerDescription}</p>
                     </div>
                   </div>
                 </div>
@@ -107,7 +112,7 @@ const Home = () => {
       {/* Fallback offer if no dynamic offers */}
       {!offersLoading && offers.length === 0 && (
         <SlideInBottom>
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 w-full max-w-2xl text-center text-yellow-800 font-semibold">
+          <div className="border-l-4 border-yellow-500 p-4 mb-6 w-full max-w-2xl text-center font-semibold" style={newsStyle}>
             Special Offer: Get up to 30% off on Diwali orders! Call: <span className="text-red-700">{contactData.phone}</span>
           </div>
         </SlideInBottom>
@@ -118,9 +123,9 @@ const Home = () => {
       <StaggeredSlideInBottom>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-4xl mx-auto mb-8">
           {specialties.map((item) => (
-            <div key={item.name} className="flex flex-col items-center bg-white rounded-lg shadow p-4">
+            <div key={item.name} className="flex flex-col items-center rounded-lg shadow p-4" style={itemGroupStyle}>
               <span className="text-4xl mb-2">{item.icon}</span>
-              <span className="font-semibold text-gray-700">{item.name}</span>
+              <span className="font-semibold" style={{ color: itemGroupStyle.color }}>{item.name}</span>
             </div>
           ))}
         </div>

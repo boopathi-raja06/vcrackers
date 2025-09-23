@@ -3,13 +3,12 @@ import { Link, useLocation } from 'react-router-dom';
 // TODO: Add Heroicons/Lucide icons
 const links = [
   { name: 'Dashboard', path: '/admin/dashboard' },
+  { name: 'General', path: '/admin/general' },
   { name: 'Products', path: '/admin/products' },
   { name: 'Orders', path: '/admin/orders' },
   { name: 'Offers', path: '/admin/offers' },
-  { name: 'Payment', path: '/admin/payment' },
   { name: 'Contact', path: '/admin/contact' },
   { name: 'Banner Settings', path: '/admin/banners' },
-  { name: 'General', path: '/admin/general' },
   { name: 'Video', path: '/admin/video' },
   { name: 'Pricelist', path: '/admin/pricelist' },
 ];
