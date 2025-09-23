@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getBanners } from '../firebase/firestoreService';
 import CheckoutDrawer from '../components/CheckoutDrawer';
 import OrderProductTable from '../components/OrderProductTable';
+import banner from '../assets/banner2.jpg';
 
 const Order = () => {
   const [cartItems, setCartItems] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [banners, setBanners] = useState({
+    orderPage: banner
+  });
+
+  useEffect(() => {
+    const unsubscribe = getBanners((data) => {
+      setBanners(data);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // Clear cart after successful order
   const handleDrawerClose = (orderPlaced = false) => {
@@ -13,8 +26,21 @@ const Order = () => {
   };
 
   return (
-  <div className="w-full p-6 bg-white rounded-lg shadow mt-8">
-      <h1 className="text-2xl font-bold text-red-700 mb-4">Estimate / Order</h1>
+    <div className="flex flex-col items-center px-4 py-8">
+      {/* Banner */}
+      <div className="w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-lg shadow mb-6 overflow-hidden flex items-center justify-center">
+        <img 
+          src={banners.orderPage || banner} 
+          alt="Order Banner" 
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            e.target.src = banner;
+          }}
+        />
+      </div>
+      
+      <div className="w-full p-6 bg-white rounded-lg shadow">
+        <h1 className="text-2xl font-bold text-red-700 mb-4">Estimate / Order</h1>
       <OrderProductTable cartItems={cartItems} setCartItems={setCartItems} />
       <button
         className="bg-red-700 text-white px-6 py-2 rounded hover:bg-red-800"
@@ -30,13 +56,14 @@ const Order = () => {
         onOrderPlaced={() => handleDrawerClose(true)}
       />
       <p className="mt-6 text-gray-700">For bulk orders and special requests, please contact us directly.</p>
-      <footer className="bg-gray-900 text-gray-100 w-full py-6 mt-8 rounded-lg">
-        <div className="max-w-3xl mx-auto px-4">
-          <h3 className="font-bold text-lg mb-2">Veena Crackers</h3>
-          <p className="mb-2">123 Main Street, Sivakasi | Phone: +91-9876543210 | Email: info@veenacrackers.in</p>
-          <p className="text-xs">Disclaimer: As per Supreme Court order, online sale of crackers is prohibited. This site is for information only.</p>
-        </div>
-      </footer>
+        <footer className="bg-gray-900 text-gray-100 w-full py-6 mt-8 rounded-lg">
+          <div className="max-w-3xl mx-auto px-4">
+            <h3 className="font-bold text-lg mb-2">Veena Crackers</h3>
+            <p className="mb-2">123 Main Street, Sivakasi | Phone: +91-9876543210 | Email: info@veenacrackers.in</p>
+            <p className="text-xs">Disclaimer: As per Supreme Court order, online sale of crackers is prohibited. This site is for information only.</p>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 };

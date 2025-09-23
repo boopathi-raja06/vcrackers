@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SlideInTop, SlideInLeft, SlideInRight, SlideInBottom, StaggeredSlideInBottom } from '../components/MotionWrappers';
 import ProductList from '../components/ProductList';
-import { getOffers } from '../firebase/firestoreService';
+import { getOffers, getContact, getBanners } from '../firebase/firestoreService';
 
 import diwaliBanner from '../assets/banner2.jpg';
 
@@ -19,20 +19,46 @@ const specialties = [
 const Home = () => {
   const [offers, setOffers] = useState([]);
   const [offersLoading, setOffersLoading] = useState(true);
+  const [contactData, setContactData] = useState({
+    phone: "+91-9876543210",
+    email: "info@veenacrackers.in"
+  });
+  const [banners, setBanners] = useState({
+    homePage: diwaliBanner
+  });
 
   useEffect(() => {
-    const unsubscribe = getOffers((offersData) => {
+    const unsubscribeOffers = getOffers((offersData) => {
       setOffers(offersData);
       setOffersLoading(false);
     });
 
-    return () => unsubscribe();
+    const unsubscribeContact = getContact((data) => {
+      setContactData(data);
+    });
+
+    const unsubscribeBanners = getBanners((data) => {
+      setBanners(data);
+    });
+
+    return () => {
+      unsubscribeOffers();
+      unsubscribeContact();
+      unsubscribeBanners();
+    };
   }, []);
   return (
     <div className="flex flex-col items-center px-4 py-8">
       <SlideInTop>
-  <div className="w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-lg shadow mb-6 overflow-hidden flex items-center justify-center">
-          <img src={diwaliBanner} alt="Diwali Banner" className="w-full h-full object-cover" />
+        <div className="w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-lg shadow mb-6 overflow-hidden flex items-center justify-center">
+          <img 
+            src={banners.homePage || diwaliBanner} 
+            alt="Home Banner" 
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.src = diwaliBanner;
+            }}
+          />
         </div>
       </SlideInTop>
       <SlideInLeft>
@@ -72,7 +98,7 @@ const Home = () => {
               ))}
             </div>
             <div className="text-center mt-4">
-              <span className="text-red-700 font-semibold">Call: +91-9876543210</span>
+              <span className="text-red-700 font-semibold">Call: {contactData.phone}</span>
             </div>
           </div>
         </SlideInBottom>
@@ -82,7 +108,7 @@ const Home = () => {
       {!offersLoading && offers.length === 0 && (
         <SlideInBottom>
           <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 w-full max-w-2xl text-center text-yellow-800 font-semibold">
-            Special Offer: Get up to 30% off on Diwali orders! Call: <span className="text-red-700">+91-9876543210</span>
+            Special Offer: Get up to 30% off on Diwali orders! Call: <span className="text-red-700">{contactData.phone}</span>
           </div>
         </SlideInBottom>
       )}
@@ -149,7 +175,7 @@ const Home = () => {
         <footer className="bg-gray-900 text-gray-100 w-full h-[30vh] flex items-center justify-center mt-8 rounded-lg">
           <div className="mx-auto px-4 text-center">
             <h3 className="font-bold text-2xl mb-4">Veena Crackers</h3>
-            <p className="mb-4 text-lg">123 Main Street, Sivakasi | Phone: +91-9876543210 | Email: info@veenacrackers.in</p>
+            <p className="mb-4 text-lg">123 Main Street, Sivakasi | Phone: {contactData.phone} | Email: {contactData.email}</p>
             <p className="text-base">Disclaimer: As per Supreme Court order, online sale of crackers is prohibited. This site is for information only.</p>
           </div>
         </footer>

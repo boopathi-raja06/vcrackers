@@ -8,7 +8,7 @@ const links = [
   { name: 'Offers', path: '/admin/offers' },
   { name: 'Payment', path: '/admin/payment' },
   { name: 'Contact', path: '/admin/contact' },
-  { name: 'Banner', path: '/admin/banner' },
+  { name: 'Banner Settings', path: '/admin/banners' },
   { name: 'General', path: '/admin/general' },
   { name: 'Video', path: '/admin/video' },
   { name: 'Pricelist', path: '/admin/pricelist' },

@@ -1,4 +1,4 @@
-import { db } from "./initFirebase";
+import { db, storage } from "./initFirebase";
 import {
   collection,
   getDocs,
@@ -7,8 +7,15 @@ import {
   deleteDoc,
   doc,
   onSnapshot,
-  getDoc
+  getDoc,
+  setDoc
 } from "firebase/firestore";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject
+} from "firebase/storage";
 import { validateOrder } from "./orderSchema";
 
 // Products
@@ -162,5 +169,110 @@ export const deleteOffer = async (id) => {
   } catch (error) {
     console.error('Error deleting offer:', error);
     throw new Error(`Failed to delete offer: ${error.message}`);
+  }
+};
+
+// Contact
+export const getContact = (callback) => {
+  return onSnapshot(doc(db, "contact", "info"), (snapshot) => {
+    if (snapshot.exists()) {
+      callback(snapshot.data());
+    } else {
+      // Return default contact info if document doesn't exist
+      callback({
+        phone: "+91-9876543210",
+        whatsapp: "+91-9876543210",
+        email: "info@veenacrackers.in"
+      });
+    }
+  });
+};
+
+export const updateContact = async (contactData) => {
+  try {
+    await updateDoc(doc(db, "contact", "info"), {
+      ...contactData,
+      updatedAt: new Date().toISOString()
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating contact:', error);
+    throw new Error(`Failed to update contact: ${error.message}`);
+  }
+};
+
+// Banners
+// Note: Make sure Firebase Storage rules allow read/write access:
+// rules_version = '2';
+// service firebase.storage {
+//   match /b/{bucket}/o {
+//     match /{allPaths=**} {
+//       allow read, write: if true;
+//     }
+//   }
+// }
+export const getBanners = (callback) => {
+  return onSnapshot(doc(db, "banners", "settings"), (snapshot) => {
+    if (snapshot.exists()) {
+      callback(snapshot.data());
+    } else {
+      // Return default banner info if document doesn't exist - using import paths
+      callback({
+        aboutUs: "",
+        contactUs: "",
+        orderPage: "",
+        giftbox: "",
+        gallery: "",
+        homePage: ""
+      });
+    }
+  });
+};
+
+export const uploadBannerImage = async (file, bannerType) => {
+  try {
+    // Create a more unique filename to avoid conflicts
+    const fileExtension = file.name.split('.').pop();
+    const fileName = `${bannerType}_${Date.now()}.${fileExtension}`;
+    
+    // Create a reference to the banner image in storage
+    const storageRef = ref(storage, `banners/${fileName}`);
+    
+    // Upload the file
+    const snapshot = await uploadBytes(storageRef, file);
+    
+    // Get the download URL
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    
+    return downloadURL;
+  } catch (error) {
+    console.error('Error uploading banner image:', error);
+    throw new Error(`Failed to upload banner image: ${error.message}`);
+  }
+};
+
+export const updateBanners = async (bannerData) => {
+  try {
+    await setDoc(doc(db, "banners", "settings"), {
+      ...bannerData,
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating banners:', error);
+    throw new Error(`Failed to update banners: ${error.message}`);
+  }
+};
+
+export const updateSingleBanner = async (bannerType, imageURL) => {
+  try {
+    await updateDoc(doc(db, "banners", "settings"), {
+      [bannerType]: imageURL,
+      updatedAt: new Date().toISOString()
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating single banner:', error);
+    throw new Error(`Failed to update ${bannerType} banner: ${error.message}`);
   }
 };

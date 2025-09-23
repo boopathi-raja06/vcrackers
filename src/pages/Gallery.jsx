@@ -1,17 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getBanners } from '../firebase/firestoreService';
+import banner from '../assets/banner2.jpg';
 
 const images = [
-  { src: 'https://via.placeholder.com/300x200?text=Cracker+1', caption: 'Cracker 1' },
-  { src: 'https://via.placeholder.com/300x200?text=Cracker+2', caption: 'Cracker 2' },
-  { src: 'https://via.placeholder.com/300x200?text=Cracker+3', caption: 'Cracker 3' },
-  { src: 'https://via.placeholder.com/300x200?text=Cracker+4', caption: 'Cracker 4' },
+  { src: 'https://picsum.photos/300/200?random=1', caption: 'Cracker 1' },
+  { src: 'https://picsum.photos/300/200?random=2', caption: 'Cracker 2' },
+  { src: 'https://picsum.photos/300/200?random=3', caption: 'Cracker 3' },
+  { src: 'https://picsum.photos/300/200?random=4', caption: 'Cracker 4' },
 ];
 
 const Gallery = () => {
   const [selected, setSelected] = useState(null);
+  const [banners, setBanners] = useState({
+    gallery: banner
+  });
+
+  useEffect(() => {
+    const unsubscribe = getBanners((data) => {
+      setBanners(data);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="max-w-4xl mx-auto p-6">
+      {/* Banner */}
+      <div className="w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-lg shadow mb-6 overflow-hidden flex items-center justify-center">
+        <img 
+          src={banners.gallery || banner} 
+          alt="Gallery Banner" 
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            e.target.src = banner;
+          }}
+        />
+      </div>
+      
       <h1 className="text-2xl font-bold text-red-700 mb-6">Gallery</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
         {images.map((img, idx) => (

@@ -6,6 +6,7 @@ import Contact from './pages/Contact';
 import Gallery from './pages/Gallery';
 import Safety from './pages/Safety';
 import Order from './pages/Order';
+import Giftbox from './pages/Giftbox';
 
 import AdminLogin from './pages/AdminLogin';
 import AdminLayout from './admin/AdminLayout';
@@ -14,6 +15,8 @@ import ProductManagement from './admin/ProductManagement';
 import ProductsPage from './admin/ProductsPage';
 import OrdersPage from './admin/OrdersPage';
 import OffersPage from './admin/OffersPage';
+import ContactPage from './admin/ContactPage';
+import BannerPage from './admin/BannerPage';
 
 import Navbar from './components/Navbar';
 import FloatingIcons from './components/FloatingIcons';
@@ -41,6 +44,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/order" element={<Order />} />
+        <Route path="/giftbox" element={<Giftbox />} />
         <Route path="/safety" element={<Safety />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard/*" element={<AdminLayout />}>
@@ -50,6 +54,8 @@ function App() {
         <Route path="/admin/products" element={<ProductsPage />} />
         <Route path="/admin/orders" element={<OrdersPage />} />
         <Route path="/admin/offers" element={<OffersPage />} />
+        <Route path="/admin/contact" element={<ContactPage />} />
+        <Route path="/admin/banners" element={<BannerPage />} />
         {/* Add more standalone admin routes here if needed */}
       </Routes>
     </Router>
