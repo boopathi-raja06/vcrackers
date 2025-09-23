@@ -453,32 +453,6 @@ export default function OrdersPage() {
         </div>
       </div>
 
-      {/* Summary Statistics */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-2xl font-bold text-gray-900">{orders.length}</div>
-          <div className="text-sm text-gray-500">Total Orders</div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-2xl font-bold text-yellow-600">
-            {orders.filter(o => o.status === 'Pending').length}
-          </div>
-          <div className="text-sm text-gray-500">Pending</div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-2xl font-bold text-blue-600">
-            {orders.filter(o => o.status === 'Dispatched').length}
-          </div>
-          <div className="text-sm text-gray-500">Dispatched</div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <div className="text-2xl font-bold text-green-600">
-            {orders.filter(o => o.status === 'Delivered').length}
-          </div>
-          <div className="text-sm text-gray-500">Delivered</div>
-        </div>
-      </div>
-
       {/* View Order Modal */}
       {viewOrder && (
         <div className="fixed inset-0 z-50 overflow-y-auto">

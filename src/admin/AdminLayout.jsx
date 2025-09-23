@@ -9,7 +9,6 @@ export default function AdminLayout() {
     { name: 'Products', path: '/admin/products' },
     { name: 'Orders', path: '/admin/orders' },
     { name: 'Offers', path: '/admin/dashboard/offers' },
-    { name: 'Payment', path: '/admin/dashboard/payment' },
     { name: 'Contact', path: '/admin/dashboard/contact' },
     { name: 'Banner', path: '/admin/dashboard/banner' },
     { name: 'General', path: '/admin/dashboard/general' },
