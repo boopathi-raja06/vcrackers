@@ -29,18 +29,23 @@ const Contact = () => {
     };
   }, []);
   return (
-    <div className="bg-white mt-8 flex flex-col items-center">
-      {/* Banner - Full Width */}
-      <div className="w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-lg shadow mb-6 overflow-hidden flex items-center justify-center">
-        <img 
-          src={banners.contactUs || banner} 
-          alt="Contact Banner" 
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            e.target.src = banner;
-          }}
-        />
+    <>
+      {/* Dedicated Banner Section */}
+      <div className="w-full flex justify-center py-4 bg-gray-50">
+        <div className="w-4/5 h-80 md:h-96 lg:h-[500px] rounded-lg shadow-lg overflow-hidden bg-white">
+          <img 
+            src={banners.contactUs || banner} 
+            alt="Contact Banner" 
+            className="w-full h-full object-cover object-center"
+            onError={(e) => {
+              e.target.src = banner;
+            }}
+          />
+        </div>
       </div>
+
+      {/* Main Content Section */}
+      <div className="bg-white mt-8 flex flex-col items-center">
 
       {/* Contact Box */}
       <div className="max-w-2xl w-full mx-auto p-6 bg-white rounded-lg shadow flex flex-col items-center">
@@ -116,7 +121,8 @@ const Contact = () => {
           </p>
         </div>
       </footer>
-    </div>
+      </div>
+    </>
   );
 };
 

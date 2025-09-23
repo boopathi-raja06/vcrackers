@@ -23,18 +23,23 @@ const Giftbox = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center px-4 py-8">
-      {/* Banner */}
-      <div className="w-full h-56 sm:h-72 md:h-80 lg:h-96 rounded-lg shadow mb-6 overflow-hidden flex items-center justify-center">
-        <img 
-          src={banners.giftbox || banner} 
-          alt="Giftbox Banner" 
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            e.target.src = banner;
-          }}
-        />
+    <>
+      {/* Dedicated Banner Section */}
+      <div className="w-full flex justify-center py-4 bg-gray-50">
+        <div className="w-4/5 h-80 md:h-96 lg:h-[500px] rounded-lg shadow-lg overflow-hidden bg-white">
+          <img 
+            src={banners.giftbox || banner} 
+            alt="Giftbox Banner" 
+            className="w-full h-full object-cover object-center"
+            onError={(e) => {
+              e.target.src = banner;
+            }}
+          />
+        </div>
       </div>
+
+      {/* Main Content Section */}
+      <div className="flex flex-col items-center px-4 py-8">
 
       <h1 className="text-3xl font-bold text-red-700 mb-4">Gift Boxes</h1>
       <p className="text-lg text-gray-700 mb-8 max-w-2xl text-center">
@@ -65,7 +70,8 @@ const Giftbox = () => {
           <p className="text-base">Disclaimer: As per Supreme Court order, online sale of crackers is prohibited. This site is for information only.</p>
         </div>
       </footer>
-    </div>
+      </div>
+    </>
   );
 };
 
