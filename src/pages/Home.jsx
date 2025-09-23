@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { SlideInTop, SlideInLeft, SlideInRight, SlideInBottom, StaggeredSlideInBottom } from '../components/MotionWrappers';
 import ProductList from '../components/ProductList';
+import FloatingIcons from '../components/FloatingIcons';
 import { getOffers, getContact, getBanners } from '../firebase/firestoreService';
 import { useColors } from '../contexts/ColorProvider';
+import { AmbientCrackersAnimation, FireworkTrails } from '../components/CrackersAnimation';
 
 import diwaliBanner from '../assets/banner2.jpg';
 
@@ -54,6 +56,15 @@ const Home = () => {
   }, []);
   return (
     <>
+      {/* Beautiful Crackers Animations */}
+      <AmbientCrackersAnimation />
+      <FireworkTrails isActive={true} />
+      
+      {/* Test animation indicator */}
+      <div className="fixed top-4 right-4 z-40 bg-red-500 text-white px-3 py-1 rounded text-sm animate-pulse">
+        🎆 Animations Active
+      </div>
+      
       {/* Dedicated Banner Section */}
       <div className="w-full flex justify-center py-4 bg-gray-50">
         <div className="w-4/5 h-80 md:h-96 lg:h-[500px] rounded-lg shadow-lg overflow-hidden bg-white">
@@ -192,6 +203,9 @@ const Home = () => {
         </footer>
       </SlideInBottom>
       </div>
+      
+      {/* Floating action buttons with crackers explosion */}
+      <FloatingIcons />
     </>
   );
 };

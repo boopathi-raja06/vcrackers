@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getBanners } from '../firebase/firestoreService';
+import FloatingIcons from '../components/FloatingIcons';
+import { AmbientCrackersAnimation, FireworkTrails } from '../components/CrackersAnimation';
 import banner from '../assets/banner2.jpg';
 
 const giftBoxes = [
@@ -24,6 +26,10 @@ const Giftbox = () => {
 
   return (
     <>
+      {/* Beautiful Crackers Animations */}
+      <AmbientCrackersAnimation />
+      <FireworkTrails isActive={true} />
+      
       {/* Dedicated Banner Section */}
       <div className="w-full flex justify-center py-4 bg-gray-50">
         <div className="w-4/5 h-80 md:h-96 lg:h-[500px] rounded-lg shadow-lg overflow-hidden bg-white">
@@ -71,6 +77,9 @@ const Giftbox = () => {
         </div>
       </footer>
       </div>
+      
+      {/* Floating action buttons */}
+      <FloatingIcons />
     </>
   );
 };
