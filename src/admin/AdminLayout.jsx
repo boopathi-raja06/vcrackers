@@ -8,7 +8,7 @@ export default function AdminLayout() {
   const options = [
     { name: 'Products', path: '/admin/products' },
     { name: 'Orders', path: '/admin/orders' },
-    { name: 'Offers', path: '/admin/dashboard/offers' },
+    { name: 'Offers', path: '/admin/offers' },
     { name: 'Contact', path: '/admin/dashboard/contact' },
     { name: 'Banner', path: '/admin/dashboard/banner' },
     { name: 'General', path: '/admin/dashboard/general' },

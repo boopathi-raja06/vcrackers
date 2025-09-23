@@ -134,3 +134,33 @@ export const getGallery = (callback) => {
     callback(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
   });
 };
+
+// Offers
+export const getOffers = (callback) => {
+  return onSnapshot(collection(db, "offers"), (snapshot) => {
+    callback(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+  });
+};
+
+export const addOffer = async (offer) => {
+  try {
+    const docRef = await addDoc(collection(db, "offers"), {
+      ...offer,
+      createdAt: new Date().toISOString()
+    });
+    return { success: true, id: docRef.id };
+  } catch (error) {
+    console.error('Error adding offer:', error);
+    throw new Error(`Failed to add offer: ${error.message}`);
+  }
+};
+
+export const deleteOffer = async (id) => {
+  try {
+    await deleteDoc(doc(db, "offers", id));
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting offer:', error);
+    throw new Error(`Failed to delete offer: ${error.message}`);
+  }
+};

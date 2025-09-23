@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SlideInTop, SlideInLeft, SlideInRight, SlideInBottom, StaggeredSlideInBottom } from '../components/MotionWrappers';
 import ProductList from '../components/ProductList';
+import { getOffers } from '../firebase/firestoreService';
 
 import diwaliBanner from '../assets/banner2.jpg';
 
@@ -16,6 +17,17 @@ const specialties = [
 ];
 
 const Home = () => {
+  const [offers, setOffers] = useState([]);
+  const [offersLoading, setOffersLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = getOffers((offersData) => {
+      setOffers(offersData);
+      setOffersLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
   return (
     <div className="flex flex-col items-center px-4 py-8">
       <SlideInTop>
@@ -29,11 +41,51 @@ const Home = () => {
       <SlideInBottom>
         <p className="text-lg mb-4 text-gray-700">Your one-stop shop for all types of crackers. Quality, safety, and celebration guaranteed!</p>
       </SlideInBottom>
-      <SlideInBottom>
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 w-full max-w-2xl text-center text-yellow-800 font-semibold">
-          Special Offer: Get up to 30% off on Diwali orders! Call: <span className="text-red-700">+91-9876543210</span>
-        </div>
-      </SlideInBottom>
+      
+      {/* Dynamic Offers Section */}
+      {!offersLoading && offers.length > 0 && (
+        <SlideInBottom>
+          <div className="w-full max-w-4xl mb-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Special Offers</h2>
+            <div className="grid gap-4">
+              {offers.map((offer) => (
+                <div key={offer.id} className="bg-gradient-to-r from-yellow-100 to-orange-100 border-l-4 border-yellow-500 p-4 rounded-lg shadow-md">
+                  <div className="flex items-center gap-3">
+                    {offer.offerIcon && (
+                      <div className="w-8 h-8 flex-shrink-0">
+                        <img
+                          src={offer.offerIcon}
+                          alt="Offer icon"
+                          className="w-full h-full object-contain rounded"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <h3 className="font-bold text-yellow-800 text-lg">{offer.offerTitle}</h3>
+                      <p className="text-yellow-700">{offer.offerDescription}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-4">
+              <span className="text-red-700 font-semibold">Call: +91-9876543210</span>
+            </div>
+          </div>
+        </SlideInBottom>
+      )}
+      
+      {/* Fallback offer if no dynamic offers */}
+      {!offersLoading && offers.length === 0 && (
+        <SlideInBottom>
+          <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 w-full max-w-2xl text-center text-yellow-800 font-semibold">
+            Special Offer: Get up to 30% off on Diwali orders! Call: <span className="text-red-700">+91-9876543210</span>
+          </div>
+        </SlideInBottom>
+      )}
       <SlideInLeft>
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Our Specialties</h2>
       </SlideInLeft>

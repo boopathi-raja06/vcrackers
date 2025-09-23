@@ -13,6 +13,7 @@ import DashboardStats from './admin/DashboardStats';
 import ProductManagement from './admin/ProductManagement';
 import ProductsPage from './admin/ProductsPage';
 import OrdersPage from './admin/OrdersPage';
+import OffersPage from './admin/OffersPage';
 
 import Navbar from './components/Navbar';
 import FloatingIcons from './components/FloatingIcons';
@@ -48,6 +49,7 @@ function App() {
         </Route>
         <Route path="/admin/products" element={<ProductsPage />} />
         <Route path="/admin/orders" element={<OrdersPage />} />
+        <Route path="/admin/offers" element={<OffersPage />} />
         {/* Add more standalone admin routes here if needed */}
       </Routes>
     </Router>
