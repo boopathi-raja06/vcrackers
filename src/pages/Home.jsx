@@ -6,8 +6,6 @@ import { getOffers, getContact, getBanners } from '../firebase/firestoreService'
 import { useColors } from '../contexts/ColorProvider';
 import { AmbientCrackersAnimation, FireworkTrails } from '../components/CrackersAnimation';
 
-import diwaliBanner from '../assets/banner2.jpg';
-
 const specialties = [
   { name: 'Chakkars', icon: '🌀' },
   { name: 'Flower Pots', icon: '🌺' },
@@ -27,7 +25,7 @@ const Home = () => {
     email: "info@veenacrackers.in"
   });
   const [banners, setBanners] = useState({
-    homePage: diwaliBanner
+    homePage: '/images/banners/home-banner.jpg'
   });
   
   const { getColorStyles } = useColors();
@@ -70,11 +68,11 @@ const Home = () => {
         <div className="w-[95%] sm:w-[90%] md:w-4/5 h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] rounded-md sm:rounded-lg shadow-lg overflow-hidden bg-white">
           <SlideInTop>
             <img 
-              src={banners.homePage || diwaliBanner} 
+              src={banners.homePage || '/images/banners/home-banner.jpg'} 
               alt="Home Banner" 
               className="w-full h-full object-cover object-center"
               onError={(e) => {
-                e.target.src = diwaliBanner;
+                e.target.src = '/images/banners/home-banner.jpg';
               }}
             />
           </SlideInTop>

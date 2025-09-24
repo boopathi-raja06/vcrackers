@@ -3,7 +3,6 @@ import { SlideInTop, SlideInLeft, SlideInRight, SlideInBottom } from '../compone
 import { getBanners } from '../firebase/firestoreService';
 import FloatingIcons from '../components/FloatingIcons';
 import { AmbientCrackersAnimation, FireworkTrails } from '../components/CrackersAnimation';
-import banner from '../assets/banner2.jpg';
 
 const brands = [
   { name: 'Vadivel', logo: '🟦' },
@@ -13,7 +12,7 @@ const brands = [
 
 const AboutUs = () => {
   const [banners, setBanners] = useState({
-    aboutUs: banner
+    aboutUs: '/images/banners/about-banner.jpg'
   });
 
   useEffect(() => {
@@ -35,11 +34,11 @@ const AboutUs = () => {
         <div className="w-[95%] sm:w-[90%] md:w-4/5 h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] rounded-md sm:rounded-lg shadow-lg overflow-hidden bg-white">
           <SlideInTop>
             <img 
-            src={banners.aboutUs || banner} 
+            src={banners.aboutUs || '/images/banners/about-banner.jpg'} 
             alt="About Us Banner" 
             className="w-full h-full object-cover object-center"
             onError={(e) => {
-              e.target.src = banner;
+              e.target.src = '/images/banners/about-banner.jpg';
             }}
           />
           </SlideInTop>

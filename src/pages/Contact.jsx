@@ -3,7 +3,6 @@ import { SlideInTop, SlideInLeft, SlideInRight, SlideInBottom } from '../compone
 import { getContact, getBanners } from '../firebase/firestoreService';
 import FloatingIcons from '../components/FloatingIcons';
 import { AmbientCrackersAnimation, FireworkTrails } from '../components/CrackersAnimation';
-import banner from '../assets/banner2.jpg';
 
 const Contact = () => {
   const [contactData, setContactData] = useState({
@@ -13,7 +12,7 @@ const Contact = () => {
   });
   const [loading, setLoading] = useState(true);
   const [banners, setBanners] = useState({
-    contactUs: banner
+    contactUs: '/images/banners/contact-banner.jpg'
   });
 
   useEffect(() => {
@@ -43,11 +42,11 @@ const Contact = () => {
         <div className="w-[95%] sm:w-[90%] md:w-4/5 h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] rounded-md sm:rounded-lg shadow-lg overflow-hidden bg-white">
           <SlideInTop>
             <img 
-            src={banners.contactUs || banner} 
+            src={banners.contactUs || '/images/banners/contact-banner.jpg'} 
             alt="Contact Banner" 
             className="w-full h-full object-cover object-center"
             onError={(e) => {
-              e.target.src = banner;
+              e.target.src = '/images/banners/contact-banner.jpg';
             }}
           />
           </SlideInTop>

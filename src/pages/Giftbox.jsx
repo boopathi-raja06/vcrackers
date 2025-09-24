@@ -3,7 +3,6 @@ import { SlideInTop, SlideInLeft, SlideInRight, SlideInBottom } from '../compone
 import { getBanners } from '../firebase/firestoreService';
 import FloatingIcons from '../components/FloatingIcons';
 import { AmbientCrackersAnimation, FireworkTrails } from '../components/CrackersAnimation';
-import banner from '../assets/banner2.jpg';
 
 const giftBoxes = [
   { name: 'Diwali Special Box', price: '₹500', description: 'Complete festival package with assorted crackers' },
@@ -14,7 +13,7 @@ const giftBoxes = [
 
 const Giftbox = () => {
   const [banners, setBanners] = useState({
-    giftbox: banner
+    giftbox: '/images/banners/giftbox-banner.jpg'
   });
 
   useEffect(() => {
@@ -37,11 +36,11 @@ const Giftbox = () => {
         <div className="w-[95%] sm:w-[90%] md:w-4/5 h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] rounded-md sm:rounded-lg shadow-lg overflow-hidden bg-white">
           <SlideInTop>
             <img 
-            src={banners.giftbox || banner} 
+            src={banners.giftbox || '/images/banners/giftbox-banner.jpg'} 
             alt="Giftbox Banner" 
             className="w-full h-full object-cover object-center"
             onError={(e) => {
-              e.target.src = banner;
+              e.target.src = '/images/banners/giftbox-banner.jpg';
             }}
           />
           </SlideInTop>

@@ -3,7 +3,6 @@ import { SlideInTop, SlideInLeft, SlideInRight, SlideInBottom } from '../compone
 import { getBanners } from '../firebase/firestoreService';
 import FloatingIcons from '../components/FloatingIcons';
 import { AmbientCrackersAnimation, FireworkTrails } from '../components/CrackersAnimation';
-import banner from '../assets/banner2.jpg';
 
 const images = [
   { src: 'https://picsum.photos/300/200?random=1', caption: 'Cracker 1' },
@@ -15,7 +14,7 @@ const images = [
 const Gallery = () => {
   const [selected, setSelected] = useState(null);
   const [banners, setBanners] = useState({
-    gallery: banner
+    gallery: '/images/banners/gallery-banner.jpg'
   });
 
   useEffect(() => {
@@ -38,11 +37,11 @@ const Gallery = () => {
         <div className="w-[95%] sm:w-[90%] md:w-4/5 h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] rounded-md sm:rounded-lg shadow-lg overflow-hidden bg-white">
           <SlideInTop>
             <img 
-            src={banners.gallery || banner} 
+            src={banners.gallery || '/images/banners/gallery-banner.jpg'} 
             alt="Gallery Banner" 
             className="w-full h-full object-cover object-center"
             onError={(e) => {
-              e.target.src = banner;
+              e.target.src = '/images/banners/gallery-banner.jpg';
             }}
           />
           </SlideInTop>

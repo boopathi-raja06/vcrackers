@@ -5,13 +5,12 @@ import CheckoutDrawer from '../components/CheckoutDrawer';
 import OrderProductTable from '../components/OrderProductTable';
 import FloatingIcons from '../components/FloatingIcons';
 import { AmbientCrackersAnimation, FireworkTrails } from '../components/CrackersAnimation';
-import banner from '../assets/banner2.jpg';
 
 const Order = () => {
   const [cartItems, setCartItems] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [banners, setBanners] = useState({
-    orderPage: banner
+    orderPage: '/images/banners/order-banner.jpg'
   });
 
   useEffect(() => {
@@ -40,11 +39,11 @@ const Order = () => {
         <div className="w-[95%] sm:w-[90%] md:w-4/5 h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] rounded-md sm:rounded-lg shadow-lg overflow-hidden bg-white">
           <SlideInTop>
             <img 
-            src={banners.orderPage || banner} 
+            src={banners.orderPage || '/images/banners/order-banner.jpg'} 
             alt="Order Banner" 
             className="w-full h-full object-cover object-center"
             onError={(e) => {
-              e.target.src = banner;
+              e.target.src = '/images/banners/order-banner.jpg';
             }}
           />
           </SlideInTop>
