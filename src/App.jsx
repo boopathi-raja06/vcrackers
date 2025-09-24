@@ -19,6 +19,8 @@ import OffersPage from './admin/OffersPage';
 import ContactPage from './admin/ContactPage';
 import BannerPage from './admin/BannerPage';
 import GeneralPage from './admin/GeneralPage';
+import VideoSettings from './admin/VideoSettings';
+import PricelistSettings from './admin/PricelistSettings';
 
 import Navbar from './components/Navbar';
 import FloatingIcons from './components/FloatingIcons';
@@ -62,6 +64,8 @@ function App() {
           <Route path="contact" element={<ContactPage />} />
           <Route path="banners" element={<BannerPage />} />
           <Route path="general" element={<GeneralPage />} />
+          <Route path="video" element={<VideoSettings />} />
+          <Route path="pricelist" element={<PricelistSettings />} />
         </Route>
         {/* Add more standalone admin routes here if needed */}
       </Routes>

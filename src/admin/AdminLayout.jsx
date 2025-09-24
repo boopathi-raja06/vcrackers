@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import AdminSidebar from './AdminSidebar';
 import AdminNavbar from './AdminNavbar';
 
 export default function AdminLayout() {
+  const navigate = useNavigate();
+
+  // Check authentication before rendering
+  useEffect(() => {
+    if (localStorage.getItem('isAdmin') !== 'true') {
+      navigate('/admin');
+    }
+  }, [navigate]);
   const options = [
     { 
       name: 'Products', 
@@ -56,7 +64,7 @@ export default function AdminLayout() {
     },
     { 
       name: 'Video', 
-      path: '/admin/dashboard/video',
+      path: '/admin/video',
       icon: '🎥',
       gradient: 'bg-gradient-to-br from-red-400 to-red-600',
       hoverGradient: 'hover:from-red-500 hover:to-red-700',
@@ -64,14 +72,14 @@ export default function AdminLayout() {
     },
     { 
       name: 'Pricelist', 
-      path: '/admin/dashboard/pricelist',
+      path: '/admin/pricelist',
       icon: '💰',
       gradient: 'bg-gradient-to-br from-yellow-400 to-yellow-600',
       hoverGradient: 'hover:from-yellow-500 hover:to-yellow-700',
       textColor: 'text-white'
     },
   ];
-  const navigate = useNavigate();
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col items-center justify-start py-12 px-4">
       <div className="text-center mb-12">
