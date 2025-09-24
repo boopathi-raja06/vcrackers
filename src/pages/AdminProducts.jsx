@@ -48,29 +48,33 @@ const AdminProducts = () => {
         <input name="category" value={form.category} onChange={handleChange} placeholder="Category" className="p-2 border rounded" required />
         <button type="submit" className="bg-red-700 text-white px-4 py-2 rounded">Add</button>
       </form>
-      <table className="w-full border mb-6">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="p-2 border">Name</th>
-            <th className="p-2 border">Price</th>
-            <th className="p-2 border">Category</th>
-            <th className="p-2 border">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map(prod => (
-            <tr key={prod.id} className="text-center">
-              <td className="border p-2">{prod.name}</td>
-              <td className="border p-2">₹{prod.price}</td>
-              <td className="border p-2">{prod.category}</td>
-              <td className="border p-2">
-                <button className="text-blue-600 mr-2" onClick={() => handleEdit(prod)}>Edit</button>
-                <button className="text-red-600" onClick={() => handleDelete(prod.id)}>Delete</button>
-              </td>
+      <div className="overflow-x-auto mb-6">
+        <table className="w-full border min-w-[600px]">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="p-1 sm:p-2 border text-xs sm:text-sm">Name</th>
+              <th className="p-1 sm:p-2 border text-xs sm:text-sm">Price</th>
+              <th className="p-1 sm:p-2 border text-xs sm:text-sm">Category</th>
+              <th className="p-1 sm:p-2 border text-xs sm:text-sm">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {products.map(prod => (
+              <tr key={prod.id} className="text-center">
+                <td className="border p-1 sm:p-2 text-xs sm:text-sm">{prod.name}</td>
+                <td className="border p-1 sm:p-2 text-xs sm:text-sm">₹{prod.price}</td>
+                <td className="border p-1 sm:p-2 text-xs sm:text-sm">{prod.category}</td>
+                <td className="border p-1 sm:p-2">
+                  <div className="flex space-x-1 sm:space-x-2 justify-center">
+                    <button className="text-blue-600 text-xs sm:text-sm px-1 sm:px-2 py-1 bg-blue-50 rounded hover:bg-blue-100" onClick={() => handleEdit(prod)}>Edit</button>
+                    <button className="text-red-600 text-xs sm:text-sm px-1 sm:px-2 py-1 bg-red-50 rounded hover:bg-red-100" onClick={() => handleDelete(prod.id)}>Delete</button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {editId && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <form onSubmit={handleUpdate} className="bg-white p-6 rounded shadow w-full max-w-sm">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { SlideInTop, SlideInLeft, SlideInRight, SlideInBottom } from '../components/MotionWrappers';
 import { getBanners } from '../firebase/firestoreService';
 import FloatingIcons from '../components/FloatingIcons';
 import { AmbientCrackersAnimation, FireworkTrails } from '../components/CrackersAnimation';
@@ -32,9 +33,11 @@ const Gallery = () => {
       <FireworkTrails isActive={true} />
       
       {/* Dedicated Banner Section */}
-      <div className="w-full flex justify-center py-4 bg-gray-50">
-        <div className="w-4/5 h-80 md:h-96 lg:h-[500px] rounded-lg shadow-lg overflow-hidden bg-white">
-          <img 
+            {/* Dedicated Banner Section - Mobile Responsive */}
+      <div className="w-full flex justify-center py-2 sm:py-4 bg-gray-50">
+        <div className="w-[95%] sm:w-[90%] md:w-4/5 h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] rounded-md sm:rounded-lg shadow-lg overflow-hidden bg-white">
+          <SlideInTop>
+            <img 
             src={banners.gallery || banner} 
             alt="Gallery Banner" 
             className="w-full h-full object-cover object-center"
@@ -42,6 +45,7 @@ const Gallery = () => {
               e.target.src = banner;
             }}
           />
+          </SlideInTop>
         </div>
       </div>
 

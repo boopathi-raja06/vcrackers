@@ -191,41 +191,79 @@ const FloatingIcons = () => {
                   </button>
                 </div>
 
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse border border-gray-300">
-                    <thead>
-                      <tr className="bg-gradient-to-r from-red-50 to-orange-50">
-                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Product Name</th>
-                        <th className="border border-gray-300 px-4 py-3 text-left font-semibold">Category</th>
-                        <th className="border border-gray-300 px-4 py-3 text-right font-semibold">Retail Price</th>
-                        <th className="border border-gray-300 px-4 py-3 text-right font-semibold">Wholesale Price</th>
-                        <th className="border border-gray-300 px-4 py-3 text-center font-semibold">Stock</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {products.map((product, index) => (
-                        <tr key={product.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                          <td className="border border-gray-300 px-4 py-3 font-medium">{product.name}</td>
-                          <td className="border border-gray-300 px-4 py-3 text-gray-600">{product.category || 'General'}</td>
-                          <td className="border border-gray-300 px-4 py-3 text-right font-semibold text-green-600">
-                            ₹{product.rsPrice || product.price || 0}
-                          </td>
-                          <td className="border border-gray-300 px-4 py-3 text-right font-semibold text-blue-600">
-                            ₹{product.wsPrice || product.wsAmount || 0}
-                          </td>
-                          <td className="border border-gray-300 px-4 py-3 text-center">
-                            <span className={`px-2 py-1 rounded-full text-xs ${
-                              (product.stock > 10) ? 'bg-green-100 text-green-800' : 
-                              (product.stock > 0) ? 'bg-yellow-100 text-yellow-800' : 
-                              'bg-red-100 text-red-800'
-                            }`}>
-                              {product.stock || 'N/A'}
-                            </span>
-                          </td>
+                {/* Desktop Table View */}
+                <div className="hidden md:block">
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse border border-gray-300">
+                      <thead>
+                        <tr className="bg-gradient-to-r from-red-50 to-orange-50">
+                          <th className="border border-gray-300 px-2 lg:px-4 py-2 lg:py-3 text-left font-semibold text-xs lg:text-sm">Product Name</th>
+                          <th className="border border-gray-300 px-2 lg:px-4 py-2 lg:py-3 text-left font-semibold text-xs lg:text-sm">Category</th>
+                          <th className="border border-gray-300 px-2 lg:px-4 py-2 lg:py-3 text-right font-semibold text-xs lg:text-sm">Retail Price</th>
+                          <th className="border border-gray-300 px-2 lg:px-4 py-2 lg:py-3 text-right font-semibold text-xs lg:text-sm">Wholesale Price</th>
+                          <th className="border border-gray-300 px-2 lg:px-4 py-2 lg:py-3 text-center font-semibold text-xs lg:text-sm">Stock</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {products.map((product, index) => (
+                          <tr key={product.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                            <td className="border border-gray-300 px-2 lg:px-4 py-2 lg:py-3 font-medium text-xs lg:text-sm">{product.name}</td>
+                            <td className="border border-gray-300 px-2 lg:px-4 py-2 lg:py-3 text-gray-600 text-xs lg:text-sm">{product.category || 'General'}</td>
+                            <td className="border border-gray-300 px-2 lg:px-4 py-2 lg:py-3 text-right font-semibold text-green-600 text-xs lg:text-sm">
+                              ₹{product.rsPrice || product.price || 0}
+                            </td>
+                            <td className="border border-gray-300 px-2 lg:px-4 py-2 lg:py-3 text-right font-semibold text-blue-600 text-xs lg:text-sm">
+                              ₹{product.wsPrice || product.wsAmount || 0}
+                            </td>
+                            <td className="border border-gray-300 px-2 lg:px-4 py-2 lg:py-3 text-center">
+                              <span className={`px-1 lg:px-2 py-1 rounded-full text-xs ${
+                                (product.stock > 10) ? 'bg-green-100 text-green-800' : 
+                                (product.stock > 0) ? 'bg-yellow-100 text-yellow-800' : 
+                                'bg-red-100 text-red-800'
+                              }`}>
+                                {product.stock || 'N/A'}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Mobile Card View */}
+                <div className="md:hidden space-y-3">
+                  {products.map((product, index) => (
+                    <div key={product.id} className="bg-white border border-gray-300 rounded-lg p-4 shadow-sm">
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-start">
+                          <h3 className="font-semibold text-sm text-gray-900">{product.name}</h3>
+                          <span className={`px-2 py-1 rounded-full text-xs ${
+                            (product.stock > 10) ? 'bg-green-100 text-green-800' : 
+                            (product.stock > 0) ? 'bg-yellow-100 text-yellow-800' : 
+                            'bg-red-100 text-red-800'
+                          }`}>
+                            {product.stock || 'N/A'}
+                          </span>
+                        </div>
+                        
+                        <div className="text-xs text-gray-600">
+                          <span className="font-medium">Category:</span> {product.category || 'General'}
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="text-center">
+                            <div className="text-xs text-gray-500 mb-1">Retail Price</div>
+                            <div className="font-semibold text-green-600">₹{product.rsPrice || product.price || 0}</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-xs text-gray-500 mb-1">Wholesale Price</div>
+                            <div className="font-semibold text-blue-600">₹{product.wsPrice || product.wsAmount || 0}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
